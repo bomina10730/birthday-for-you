@@ -1,0 +1,405 @@
+/* =========================
+   기본 설정
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    overflow: hidden;
+    font-family: Arial, "Malgun Gothic", sans-serif;
+}
+
+
+/* =========================
+   첫 화면
+========================= */
+
+.intro {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100dvh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #fffbc9;
+
+    z-index: 10;
+
+    transition: opacity 0.2s ease;
+}
+
+ .intro.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* =========================
+   안녕하세요 버튼
+========================= */
+
+.hello-button {
+    width: 120px;
+    height: 44px;
+
+    padding: 0;
+
+    background-color: #d9d9d9;
+
+    border: 1px solid #222;
+    border-radius: 0;
+
+    color: #111;
+
+    font-family: Arial, "Malgun Gothic", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+
+    cursor: pointer;
+}
+
+.hello-button:active {
+    background-color: #cfcfcf;
+}
+
+
+
+/* =========================
+   커튼 전체
+========================= */
+
+.curtain-wrap {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100dvh;
+
+    display: flex;
+
+    z-index: 20;
+
+    pointer-events: none;
+
+    /* 처음에는 커튼을 숨김 */
+    visibility: hidden;
+}
+
+
+/* =========================
+   커튼
+========================= */
+
+.curtain {
+    width: 50%;
+    height: 100%;
+
+    /* 은은한 세로 주름 */
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #e4dcc8 0px,
+            #eee8d8 8px,
+            #dcd3bd 16px,
+            #eee8d8 24px,
+            #e4dcc8 32px
+        );
+
+    transition:
+        transform 1.2s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+
+/* =========================
+   왼쪽 커튼
+========================= */
+
+.curtain-left {
+    transform: translateX(0);
+
+    box-shadow:
+        inset -8px 0 12px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================
+   오른쪽 커튼
+========================= */
+
+.curtain-right {
+    transform: translateX(0);
+
+    box-shadow:
+        inset 8px 0 12px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================
+   커튼을 화면에 보여줌
+========================= */
+
+.curtain-wrap.show {
+    visibility: visible;
+}
+
+
+/* =========================
+   커튼 열기
+========================= */
+
+.curtain-wrap.open .curtain-left {
+    transform: translateX(-100%);
+}
+
+.curtain-wrap.open .curtain-right {
+    transform: translateX(100%);
+}
+
+/* =========================
+   VVIP 확인 화면
+========================= */
+
+.vvip-screen {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    background-color: #fffbc9;
+
+    z-index: 1;
+
+    padding-top: 10vh;
+
+    overflow: hidden;
+}
+
+
+/* =========================
+   캐릭터 이미지
+========================= */
+
+.character-box {
+    width: 72vw;
+    height: 72vw;
+
+    max-width: 330px;
+    max-height: 330px;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+
+    background-color: #eee8d8;
+}
+
+
+/* 실제 이미지 */
+
+.character-box img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    /*
+       원본 사진에서 캐릭터가
+       오른쪽에 있기 때문에
+       살짝 오른쪽을 보여줌
+    */
+    object-position: 70% center;
+}
+
+
+/* =========================
+   말풍선
+========================= */
+
+.speech-bubble {
+    position: relative;
+
+    width: 82%;
+    max-width: 360px;
+
+    margin-top: 22px;
+
+    padding: 18px 20px;
+
+    background-color: #ffffff;
+
+    border: 1.5px solid #222;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+}
+
+
+/*
+   말풍선 꼬리
+*/
+
+.speech-bubble::before {
+    content: "";
+
+    position: absolute;
+
+    top: -11px;
+    left: 50%;
+
+    width: 18px;
+    height: 18px;
+
+    background-color: #ffffff;
+
+    border-left: 1.5px solid #222;
+    border-top: 1.5px solid #222;
+
+    transform:
+        translateX(-50%)
+        rotate(45deg);
+}
+
+
+/* 말풍선 글자 */
+
+.speech-bubble p {
+    position: relative;
+
+    margin: 0;
+
+    font-size: 16px;
+
+    line-height: 1.65;
+
+    color: #222;
+
+    word-break: keep-all;
+}
+
+
+/* =========================
+   예 / 아니요 버튼
+========================= */
+
+.answer-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    width: 100%;
+
+    margin-top: 18px;
+}
+
+
+/* 버튼 기본 */
+
+.answer-button {
+    min-width: 105px;
+    height: 42px;
+
+    padding: 0 16px;
+
+    background-color: #d9d9d9;
+
+    border: 1px solid #222;
+    border-radius: 0;
+
+    color: #111;
+
+    font-family:
+        Arial,
+        "Malgun Gothic",
+        sans-serif;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.1s ease,
+        background-color 0.1s ease;
+}
+
+
+/* 눌렀을 때 */
+
+.answer-button:active {
+    transform: translateY(2px);
+
+    background-color: #c9c9c9;
+}
+
+
+/* =========================
+   모바일
+========================= */
+
+@media (max-width: 768px) {
+
+    .vvip-screen {
+        padding-top: 9vh;
+    }
+
+
+    .character-box {
+        width: 68vw;
+        height: 68vw;
+    }
+
+
+    .speech-bubble {
+        width: 84%;
+
+        margin-top: 20px;
+
+        padding: 16px 18px;
+    }
+
+
+    .speech-bubble p {
+        font-size: 15px;
+    }
+
+
+    .answer-button {
+        min-width: 105px;
+
+        height: 42px;
+
+        font-size: 15px;
+    }
+
+}
