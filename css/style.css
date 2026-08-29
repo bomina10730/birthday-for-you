@@ -201,12 +201,12 @@ body {
 
 
 /* =========================
-   캐릭터 이미지
+   VVIP 캐릭터 이미지
 ========================= */
 
 .character-box {
-    width: 72vw;
-    height: 72vw;
+    width: 68vw;
+    height: 68vw;
 
     max-width: 330px;
     max-height: 330px;
@@ -215,7 +215,7 @@ body {
 
     flex-shrink: 0;
 
-    background-color: #eee8d8;
+    background-color: transparent;
 }
 
 
@@ -228,13 +228,7 @@ body {
     display: block;
 
     object-fit: cover;
-
-    /*
-       원본 사진에서 캐릭터가
-       오른쪽에 있기 때문에
-       살짝 오른쪽을 보여줌
-    */
-    object-position: 70% center;
+    object-position: center;
 }
 
 
@@ -248,7 +242,7 @@ body {
     width: 82%;
     max-width: 360px;
 
-    margin-top: 22px;
+    margin-top: 32px;
 
     padding: 18px 20px;
 
@@ -400,6 +394,720 @@ body {
         height: 42px;
 
         font-size: 15px;
+    }
+
+}
+
+/* ==================================================
+   아니요 페이지 - 장면 연출
+================================================== */
+
+
+/* =========================
+   전체 아니요 화면
+========================= */
+
+.no-screen {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100dvh;
+
+    background-color: #F8F5E9;
+
+    overflow: hidden;
+
+    /* 기본적으로 아니요 페이지는 안 보임 */
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 20;
+}
+
+
+/* 아니요 페이지가 활성화됐을 때만 보이기 */
+
+.no-screen.show {
+    opacity: 1;
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+/* =========================
+   각각의 장면
+========================= */
+
+.no-scene {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+
+/* active가 되면 등장 */
+
+.no-scene.active {
+    opacity: 1;
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+/* ==================================================
+   ① 하?
+================================================== */
+
+.scene-huh {
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==================================================
+   ② 캐릭터 + 문구
+================================================== */
+
+.scene-character {
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+}
+
+
+/* ==================================================
+   정사각형 카드
+================================================== */
+
+.character-card {
+    width: 78vw;
+    max-width: 360px;
+
+    aspect-ratio: 1 / 1;
+
+    box-sizing: border-box;
+
+    padding: 14px;
+
+    background-color: #ffffff;
+
+    border: 1.5px solid #222;
+
+    border-radius: 22px;
+
+    box-shadow:
+        4px 5px 0 rgba(0, 0, 0, 0.12);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    /* ⭐ 박스 전체를 위로 이동 */
+    position: relative;
+    top: -30px;
+}
+
+
+/* ==================================================
+   캐릭터 사진
+================================================== */
+
+.no-character-box {
+    width: 100%;
+    height: auto;
+
+    aspect-ratio: 1 / 0.72;
+
+    overflow: hidden;
+
+    background-color: #ffffff;
+
+    border-radius: 10px;
+
+    flex-shrink: 0;
+}
+
+
+/* ==================================================
+   실제 이미지
+================================================== */
+
+.no-character-box img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center center;
+
+    /* 사진은 절대 기울이지 않음 */
+    transform: none;
+}
+
+
+/* ==================================================
+   카드 등장
+================================================== */
+
+.scene-character.active .character-card {
+
+    animation:
+        characterCardIn
+        0.55s
+        cubic-bezier(.17, .67, .35, 1.2)
+        forwards;
+
+}
+
+
+@keyframes characterCardIn {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            scale(0.75)
+            translateY(18px);
+    }
+
+    70% {
+        opacity: 1;
+
+        transform:
+            scale(1.03)
+            translateY(-2px);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            scale(1)
+            translateY(0);
+    }
+
+}
+
+
+/* ==================================================
+   왜 들어옴? 나가세요.
+================================================== */
+
+.no-text {
+    margin: 13px 0 0;
+
+    padding: 0;
+
+    color: #222222;
+
+    font-family:
+        Arial,
+        "Malgun Gothic",
+        sans-serif;
+
+    font-size: 18px;
+
+    font-weight: 500;
+
+    line-height: 1.5;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    opacity: 1;
+    visibility: visible;
+
+    position: relative;
+    z-index: 10;
+
+    flex-shrink: 0;
+
+    /* ⭐ 텍스트만 오른쪽으로 */
+    left: 30px;
+}
+
+
+/* ==================================================
+   ③ 겔아웃!
+================================================== */
+
+.scene-getout {
+
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*
+   겔아웃 장면이 active 되면
+   화면이 살짝 흔들리는 느낌
+*/
+
+.scene-getout.active {
+
+    animation:
+        getoutShake
+        0.35s
+        ease;
+}
+
+
+@keyframes getoutShake {
+
+    0% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-10px);
+    }
+
+    40% {
+        transform: translateX(10px);
+    }
+
+    60% {
+        transform: translateX(-7px);
+    }
+
+    80% {
+        transform: translateX(6px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+
+}
+
+
+/* ==================================================
+   ④ 발 사진
+================================================== */
+
+.scene-feet {
+
+    justify-content: center;
+    align-items: flex-end;
+
+    padding-bottom: 8vh;
+
+}
+
+
+/* =========================
+   발 사진 박스
+========================= */
+
+.feet-box {
+
+    width: 30vw;
+    max-width: 250px;
+
+    overflow: hidden;
+
+    transform-origin:
+        center bottom;
+
+    position: relative;
+    top: -110px;
+
+     /* ⭐ 발 사진을 오른쪽으로 이동 */
+    position: relative;
+    left: 15px;
+}
+
+
+.feet-box img {
+
+    width: 100%;
+
+    height: auto;
+
+    display: block;
+
+    object-fit: contain;
+}
+
+
+/* =========================
+   발 등장
+========================= */
+
+.scene-feet.active
+.feet-box {
+
+    animation:
+        feetIn
+        0.35s
+        cubic-bezier(.2,.8,.3,1.4)
+        forwards;
+
+}
+
+/* =========================
+   퍽퍽! 발 움직임
+========================= */
+
+.scene-feet.active.hit .feet-box {
+    animation: footHit 0.8s ease-in-out infinite;
+}
+
+
+/* =========================
+   발 퍽퍽 애니메이션
+========================= */
+
+@keyframes footHit {
+
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    20% {
+        transform: translate(-10px, 3px) rotate(-3deg);
+    }
+
+    40% {
+        transform: translate(8px, -2px) rotate(3deg);
+    }
+
+    60% {
+        transform: translate(-7px, 2px) rotate(-2deg);
+    }
+
+    80% {
+        transform: translate(5px, -1px) rotate(2deg);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+}
+
+/* =========================
+   💥 타격 이펙트
+========================= */
+
+.scene-feet {
+    position: relative;
+}
+
+
+/* 기본 상태 */
+
+.impact {
+    position: absolute;
+
+    font-size: 100px;
+
+    line-height: 1;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 10;
+}
+
+
+/* =========================
+   왼쪽 💥
+========================= */
+
+.impact-left {
+    left: 22%;
+    top: 46%;
+}
+
+
+/* =========================
+   오른쪽 💥
+========================= */
+
+.impact-right {
+    right: 13%;
+    top: 55%;
+}
+
+
+/* =========================
+   퍽퍽할 때 💥 등장
+========================= */
+
+.scene-feet.active.hit .impact {
+    animation:
+        impactPop
+        0.8s
+        ease-out
+        infinite;
+}
+
+/* =========================
+   💥 양쪽 엇박자
+========================= */
+
+.scene-feet.active.hit .impact-left {
+    animation-delay: 0s;
+}
+
+.scene-feet.active.hit .impact-right {
+    animation-delay: 0.12s;
+}
+
+
+/* 💥 튀어나왔다가 사라지는 효과 */
+
+@keyframes impactPop {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            scale(0.3)
+            rotate(-20deg);
+    }
+
+    25% {
+        opacity: 1;
+
+        transform:
+            scale(1.15)
+            rotate(8deg);
+    }
+
+    55% {
+        opacity: 1;
+
+        transform:
+            scale(1)
+            rotate(-5deg);
+    }
+
+    100% {
+        opacity: 0;
+
+        transform:
+            scale(1.4)
+            rotate(15deg);
+    }
+
+}
+
+/* =========================
+   🔴 퍽퍽 장면 빨간 배경
+========================= */
+
+.hit-flash {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(220, 30, 30, 0.18);
+
+    pointer-events: none;
+
+    opacity: 1;
+
+    z-index: 1;
+}
+
+
+/* ==================================================
+   잠시만요ㅠㅠ 버튼
+================================================== */
+
+.wait-button {
+    position: relative;
+
+    width: 170px;
+    height: 110px;
+
+    /* ⭐ 위치 조절 */
+    top: -540px;
+    margin-left: 180px;
+
+    padding: 0;
+
+    /* 회색 말풍선 */
+    background-color: #414141;
+
+    /* 검은 테두리 */
+    border: 1.5px solid #111;
+
+    /* 완전한 타원 */
+    border-radius: 50%;
+
+    /* 글자 */
+    color: #ffffff;
+
+    font-family:
+        Arial,
+        "Malgun Gothic",
+        sans-serif;
+
+    font-size: 16px;
+    font-weight: 500;
+
+    line-height: 1;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    /* 발 사진보다 위 */
+    z-index: 20;
+
+    /* 처음에는 숨김 */
+    opacity: 0;
+    visibility: hidden;
+
+    /* 기본 위치 */
+    transform: scale(0.8);
+}
+
+
+/* ==================================================
+   잠시만요 버튼 등장
+================================================== */
+
+.wait-button.show {
+    opacity: 1;
+    visibility: visible;
+
+    animation:
+        waitButtonIn
+        0.4s
+        ease-out
+        forwards;
+}
+
+
+@keyframes waitButtonIn {
+
+    0% {
+        opacity: 0;
+        transform: scale(0.75);
+    }
+
+    70% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+
+/* ==================================================
+   클릭했을 때
+================================================== */
+
+.wait-button:active {
+    transform: scale(0.95);
+}
+
+
+/* ==================================================
+   모바일
+================================================== */
+
+@media (max-width: 768px) {
+
+    .scene-huh p {
+        font-size: 64px;
+    }
+
+
+    @media (max-width: 768px) {
+
+    /* =========================
+       캐릭터 사진
+    ========================= */
+
+    .no-character-box {
+        width: 100%;
+        height: auto;
+
+        aspect-ratio: 1 / 0.72;
+
+        flex-shrink: 0;
+    }
+
+
+    /* =========================
+       문구
+    ========================= */
+
+    .no-text {
+        margin: 13px 0 0;
+
+        font-size: 18px;
+
+        line-height: 1.5;
+
+        transform: translateX(8px);
+
+        opacity: 1;
+
+        visibility: visible;
+
+        position: relative;
+        z-index: 10;
+
+        flex-shrink: 0;
+    }
+
+}
+
+
+    .scene-getout p {
+        font-size: 48px;
+    }
+
+
+    .feet-box {
+        width: 75vw;
+    }
+
+
+    .wait-button {
+        bottom: 10vh;
     }
 
 }
