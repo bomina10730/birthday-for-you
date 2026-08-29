@@ -7,7 +7,6 @@
 
     <title>Happy Seojun Day!🎂💗</title>
 
-    <meta property="og:description" content="비밀 초대장">
     <meta property="og:image" content="https://bomina10730.github.io/birthday-for-you/img/greeting.jpg">
 
     <link rel="stylesheet" href="css/style.css">
@@ -55,7 +54,7 @@
         <p>
             오늘은 VVIP 손님<br>
             예약건만 한 건 있습니다.<br>
-            본인 맞으신가요?
+            김서준님 맞으신가요?
         </p>
 
     </div>
@@ -68,17 +67,90 @@
             type="button"
             class="answer-button yes-button"
             id="yesButton">
-            예!
+            네!
         </button>
 
         <button
             type="button"
             class="answer-button no-button"
             id="noButton">
-            아닌데요?
+            아뇨?
         </button>
 
     </div>
+
+    <!-- =========================
+     아니요 페이지
+    ========================= -->
+
+<main class="no-screen" id="noScreen">
+
+    <!-- ① 하? -->
+    <div class="no-scene scene-huh" id="sceneHuh">
+    </div>
+
+
+    <!-- =========================
+        ② 캐릭터 + 문구
+    ========================= -->
+
+    <div class="no-scene scene-character" id="sceneCharacter">
+
+        <div class="character-card">
+
+            <!-- 캐릭터 사진 -->
+            <div class="no-character-box">
+                <img 
+                    src="img/no.jpg" 
+                    alt="캐릭터"
+                >
+            </div>
+
+            <!-- 문구 -->
+            <p class="no-text">
+                그럼 왜 들어옴? 나가세요.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ③ 겔아웃! -->
+    <div class="no-scene scene-getout" id="sceneGetout">
+    </div>
+
+
+    <!-- ④ 발 사진 + 퍽퍽 -->
+    <div class="no-scene scene-feet" id="sceneFeet">
+
+    <!-- 💥 빨간 타격 효과 -->
+    <div class="hit-flash"></div>
+
+    <!-- 왼쪽 💥 -->
+    <span class="impact impact-left">💥</span>
+
+    <!-- 발 사진 -->
+    <div class="feet-box">
+        <img
+            src="img/foot.png"
+            alt="발"
+        >
+    </div>
+
+    <!-- 오른쪽 💥 -->
+    <span class="impact impact-right">💥</span>
+
+    </div>
+
+
+    <!-- ⑤ 잠시만요 -->
+    <button
+        type="button"
+        class="wait-button"
+        id="waitButton">
+        잠시만요ㅠㅠ
+    </button>
 
 </main>
 
