@@ -97,9 +97,9 @@ const waitButton =
    효과음
 ================================================== */
 
-const huhSound = document.getElementById("huhSound");
+const huhSound = new Audio("sound/huh.mp3");
 const getoutSound = new Audio("sound/GETOUT.mp3");
-const hmmSound = document.getElementById("hmmSound");
+const hmmSound = new Audio("sound/hmm.mp3");
 
 huhSound.preload = "auto";
 getoutSound.preload = "auto";
@@ -489,7 +489,6 @@ waitButton.addEventListener("click", function () {
         console.log("hmm 재생 실패:", error);
     });
 
-vvipScreen.classList.add("show");
 
     /* ==================================================
        아니요 버튼 다시 활성화
