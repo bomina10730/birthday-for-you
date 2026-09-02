@@ -274,7 +274,10 @@ function stopThumping() {
    아니요 버튼 클릭
 ================================================== */
 
-noButton.addEventListener("click", function () {
+noButton.addEventListener("click", () => {
+
+curtainSound.pause();
+curtainSound.currentTime = 0;
 
 
     /* 중복 클릭 방지 */
@@ -417,7 +420,7 @@ noButton.addEventListener("click", function () {
         waitButton.classList.add("show");
 
 
-    }, 4100);
+    }, 5000);
 
 });
 
