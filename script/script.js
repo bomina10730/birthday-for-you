@@ -97,11 +97,10 @@ const waitButton =
    효과음
 ================================================== */
 
-const huhSound = new Audio("sound/huh.mp3");
+const huhSound = document.getElementById("huhSound");
 const getoutSound = new Audio("sound/GETOUT.mp3");
-const hmmSound = new Audio("sound/hmm.mp3");
+const hmmSound = document.getElementById("hmmSound");
 
-/* 모바일에서 미리 로드 */
 huhSound.preload = "auto";
 getoutSound.preload = "auto";
 hmmSound.preload = "auto";
@@ -323,9 +322,10 @@ noButton.addEventListener("click", function () {
 
     sceneHuh.classList.add("active");
 
-
-    playSound(huhSound);
-
+    huhSound.currentTime = 0;
+    huhSound.play().catch(function(error) {
+        console.log("huh 재생 실패:", error);
+    });
 
     /* ==================================================
        ② 겔아웃!
@@ -481,11 +481,15 @@ waitButton.addEventListener("click", function () {
     vvipScreen.classList.add("show");
 
     /* =========================
-   흐음? 효과음
+    흐음? 효과음
     ========================= */
 
-    playSound(hmmSound);
+    hmmSound.currentTime = 0;
+    hmmSound.play().catch(function(error) {
+        console.log("hmm 재생 실패:", error);
+    });
 
+vvipScreen.classList.add("show");
 
     /* ==================================================
        아니요 버튼 다시 활성화
