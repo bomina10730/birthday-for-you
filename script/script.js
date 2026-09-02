@@ -11,6 +11,9 @@ const curtain =
 const intro =
     document.querySelector(".intro");
 
+const vvipScreen =
+    document.getElementById("vvipScreen");
+
 
 /* =========================
    커튼 효과음
@@ -94,14 +97,40 @@ const waitButton =
    효과음
 ================================================== */
 
-const huhSound =
-    new Audio("sound/huh.mp3");
+const huhSound = new Audio("sound/huh.mp3");
+const getoutSound = new Audio("sound/GETOUT.mp3");
+const hmmSound = new Audio("sound/hmm.mp3");
 
-const getoutSound =
-    new Audio("sound/GETOUT.mp3");
+/* 모바일에서 미리 로드 */
+huhSound.preload = "auto";
+getoutSound.preload = "auto";
+hmmSound.preload = "auto";
 
-const hmmSound =
-    new Audio("sound/hmm.mp3");
+
+/* ==================================================
+   효과음 재생 함수
+================================================== */
+
+function playSound(sound) {
+
+    sound.pause();
+    sound.currentTime = 0;
+
+    const playPromise = sound.play();
+
+    if (playPromise !== undefined) {
+
+        playPromise.catch(function (error) {
+
+            console.log(
+                "오디오 재생 실패:",
+                error
+            );
+
+        });
+
+    }
+}
 
 
 /* ==================================================
@@ -295,17 +324,7 @@ noButton.addEventListener("click", function () {
     sceneHuh.classList.add("active");
 
 
-    huhSound.currentTime = 0;
-
-    huhSound.play()
-        .catch(function (error) {
-
-            console.log(
-                "huh.mp3 재생 실패:",
-                error
-            );
-
-        });
+    playSound(huhSound);
 
 
     /* ==================================================
@@ -465,12 +484,7 @@ waitButton.addEventListener("click", function () {
    흐음? 효과음
     ========================= */
 
-    hmmSound.currentTime = 0;
-    hmmSound.play().catch(function (error) {
-
-        console.log("흐음 소리 재생 실패:", error);
-
-    });
+    playSound(hmmSound);
 
 
     /* ==================================================
