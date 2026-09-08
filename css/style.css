@@ -1162,3 +1162,574 @@ body {
     }
 
 }
+
+
+/* =========================
+   YES 페이지
+========================= */
+
+.yes-screen {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #F8F5E9;
+
+    transition: background-color 2.8s ease;
+
+    z-index: 5;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    overflow: hidden;
+}
+
+.yes-screen.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    background-color: #FFB6C8;
+}
+
+
+/* =========================
+   YES 사진
+========================= */
+
+.yes-photo {
+    position: relative;
+
+    width: 65vw;
+    max-width: 300px;
+
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+    border-radius: 0px;
+
+    z-index: 10;
+
+    top: -90px;
+
+    transform: scale(0.65);
+    opacity: 0;
+}
+
+.yes-screen.show .yes-photo {
+    animation: photoGrow 2.8s ease-out forwards;
+}
+
+@keyframes photoGrow {
+    0% {
+        transform: scale(0.65);
+        opacity: 0;
+    }
+
+    40% {
+        opacity: 0.35;
+    }
+
+    70% {
+        opacity: 0.75;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.yes-photo img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+
+/* =========================
+   폭죽 컨테이너
+========================= */
+
+.firework-container {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+    pointer-events: none;
+
+    z-index: 15;
+}
+
+
+/* =========================
+   폭죽 하나
+========================= */
+
+.firework {
+    position: absolute;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: var(--firework-color);
+
+    box-shadow:
+        0 0 5px var(--firework-color),
+        0 0 10px var(--firework-color);
+
+    animation: fireworkCore 0.9s ease-out forwards;
+}
+
+
+/* =========================
+   폭죽 중심
+========================= */
+
+@keyframes fireworkCore {
+
+    0% {
+        transform: scale(0.2);
+        opacity: 0;
+    }
+
+    10% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    70% {
+        transform: scale(1.4);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+
+/* =========================
+   폭죽 빛줄기
+========================= */
+
+.firework-ray {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 2px;
+    height: 45px;
+
+    transform-origin: 50% 100%;
+
+    border-radius: 999px;
+
+    background: linear-gradient(
+        to top,
+        var(--firework-color),
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0)
+    );
+
+    filter: drop-shadow(
+        0 0 4px var(--firework-color)
+    );
+
+    animation: rayExplosion 0.9s ease-out forwards;
+}
+
+
+@keyframes rayExplosion {
+
+    0% {
+        height: 3px;
+        opacity: 0;
+        transform: translate(-50%, 0) rotate(var(--angle));
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    70% {
+        height: 45px;
+        opacity: 0.9;
+
+        transform:
+            translate(-50%, 0)
+            rotate(var(--angle))
+            translateY(-28px);
+    }
+
+    100% {
+        height: 20px;
+        opacity: 0;
+
+        transform:
+            translate(-50%, 0)
+            rotate(var(--angle))
+            translateY(-42px);
+    }
+}
+
+
+/* =========================
+   작은 반짝이
+========================= */
+
+.firework-spark {
+    position: absolute;
+
+    width: 3px;
+    height: 3px;
+
+    border-radius: 50%;
+
+    background: var(--firework-color);
+
+    box-shadow:
+        0 0 5px var(--firework-color),
+        0 0 9px var(--firework-color);
+
+    animation: sparkMove 0.8s ease-out forwards;
+}
+
+
+@keyframes sparkMove {
+
+    0% {
+        opacity: 1;
+
+        transform:
+            translate(0, 0)
+            scale(1);
+    }
+
+    100% {
+        opacity: 0;
+
+        transform:
+            translate(
+                var(--spark-x),
+                var(--spark-y)
+            )
+            scale(0.2);
+    }
+}
+
+/* =========================
+   사진 + 메시지 파트
+========================= */
+
+/* 각각의 사진 + 메시지 */
+.memory {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100dvh;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 20px;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 30;
+}
+
+
+/* =========================
+   사진
+========================= */
+
+.memory-photo {
+    width: 78vw;
+    max-width: 320px;
+
+    opacity: 0;
+
+    transform: translateY(25px) scale(0.96);
+}
+
+.memory-photo img {
+    width: 100%;
+    height: auto;
+
+    display: block;
+
+    object-fit: contain;
+}
+
+
+/* =========================
+   메시지
+========================= */
+
+.memory-message {
+    margin-top: 100px;
+
+    width: 90%;
+
+    text-align: center;
+
+    opacity: 0;
+
+    transform: translateY(15px);
+}
+
+.memory-message p {
+    margin: 0;
+
+    font-size: 18px;
+    font-weight: 500;
+
+    line-height: 1.6;
+
+    letter-spacing: -0.5px;
+
+    color: #4E5B4A;
+
+    transform: translateY(-90px);
+}
+
+
+/* =========================
+   장면이 나타났을 때
+========================= */
+
+.memory.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* =========================
+   사진 + 메시지 등장 효과
+========================= */
+
+/* -------------------------
+   1번
+   아래에서 퐁!
+------------------------- */
+
+.memory-1.show .memory-photo {
+    animation: memory1Photo 0.9s cubic-bezier(0.22, 1.2, 0.36, 1) forwards;
+}
+
+.memory-1.show .memory-message {
+    animation: memory1Message 0.7s ease-out 0.35s forwards;
+}
+
+@keyframes memory1Photo {
+
+    0% {
+        opacity: 0;
+        transform: translateY(80px) scale(0.75) rotate(-4deg);
+    }
+
+    65% {
+        opacity: 1;
+        transform: translateY(-8px) scale(1.04) rotate(1deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0);
+    }
+}
+
+@keyframes memory1Message {
+
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.85);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateY(-4px) scale(1.03);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* -------------------------
+   2번
+   왼쪽에서 휙!
+------------------------- */
+
+.memory-2.show .memory-photo {
+    animation: memory2Photo 0.9s cubic-bezier(0.18, 0.9, 0.35, 1.15) forwards;
+}
+
+.memory-2.show .memory-message {
+    animation: memory2Message 0.7s ease-out 0.35s forwards;
+}
+
+@keyframes memory2Photo {
+
+    0% {
+        opacity: 0;
+        transform: translateX(-120px) rotate(-8deg) scale(0.85);
+    }
+
+    65% {
+        opacity: 1;
+        transform: translateX(8px) rotate(2deg) scale(1.03);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) rotate(0) scale(1);
+    }
+}
+
+@keyframes memory2Message {
+
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(5px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* -------------------------
+   3번
+   오른쪽에서 슝!
+------------------------- */
+
+.memory-3.show .memory-photo {
+    animation: memory3Photo 1s cubic-bezier(0.18, 0.9, 0.35, 1.15) forwards;
+}
+
+.memory-3.show .memory-message {
+    animation: memory3Message 0.75s ease-out 0.4s forwards;
+}
+
+@keyframes memory3Photo {
+
+    0% {
+        opacity: 0;
+        transform: translateX(120px) rotate(8deg) scale(0.82);
+    }
+
+    65% {
+        opacity: 1;
+        transform: translateX(-8px) rotate(-2deg) scale(1.04);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) rotate(0) scale(1);
+    }
+}
+
+@keyframes memory3Message {
+
+    0% {
+        opacity: 0;
+        transform: translateX(50px) scale(0.9);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(-5px) scale(1.02);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* -------------------------
+   4번
+   위에서 툭!
+------------------------- */
+
+.memory-4.show .memory-photo {
+    animation: memory4Photo 0.9s cubic-bezier(0.18, 0.9, 0.35, 1.15) forwards;
+}
+
+.memory-4.show .memory-message {
+    animation: memory4Message 0.7s ease-out 0.35s forwards;
+}
+
+@keyframes memory4Photo {
+
+    0% {
+        opacity: 0;
+        transform: translateY(-100px) rotate(6deg) scale(0.82);
+    }
+
+    65% {
+        opacity: 1;
+        transform: translateY(8px) rotate(-2deg) scale(1.04);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotate(0) scale(1);
+    }
+}
+
+@keyframes memory4Message {
+
+    0% {
+        opacity: 0;
+        transform: translateY(-40px) scale(0.9);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateY(5px) scale(1.02);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
