@@ -198,13 +198,25 @@ body {
 
     z-index: 1;
 
-    /*
-       ⭐ 아이폰 15 Pro 기준
-       위쪽 여백
-    */
     padding-top: 100px;
 
     overflow: hidden;
+
+    /* 처음에는 숨김 */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition: opacity 0.5s ease;
+}
+
+
+/* VVIP 화면 표시 */
+
+.vvip-screen.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 
@@ -1732,4 +1744,103 @@ body {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
+}
+
+/* =========================
+   KUJI 기본 화면
+========================= */
+
+.kuji-screen {
+    width: 100%;
+    min-height: 100dvh;
+
+    box-sizing: border-box;
+
+    padding: 70px 20px 40px;
+
+    background-color: #191931;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow: hidden;
+
+    /* 처음에는 숨김 */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition: opacity 0.8s ease;
+}
+
+
+/* =========================
+   KUJI 화면 등장
+========================= */
+
+.kuji-screen.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+
+/* =========================
+   KUJI 로고
+========================= */
+
+.kuji-logo {
+    width: 70%;
+    max-width: 260px;
+
+    margin-bottom: 35px;
+}
+
+.kuji-logo img {
+    width: 100%;
+    height: auto;
+
+    display: block;
+}
+
+
+/* =========================
+   KUJI 판
+========================= */
+
+.kuji-board {
+    width: 100%;
+    max-width: 390px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 12px 8px;
+
+    align-items: center;
+    justify-items: center;
+}
+
+
+/* =========================
+   KUJI 하나
+========================= */
+
+.kuji-item {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.kuji-item img {
+    width: 100%;
+    max-width: 115px;
+
+    height: auto;
+
+    display: block;
 }
