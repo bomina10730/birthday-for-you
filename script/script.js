@@ -2,17 +2,33 @@
    요소 가져오기
 ========================= */
 
-const helloButton =
-    document.getElementById("helloButton");
+const helloButton = 
+    document.getElementById("helloButton"); 
 
-const curtain =
-    document.getElementById("curtain");
+const curtain = 
+    document.getElementById("curtain"); 
 
-const intro =
-    document.querySelector(".intro");
+const intro = 
+    document.querySelector(".intro"); 
 
-const vvipScreen =
-    document.getElementById("vvipScreen");
+const vvipScreen = 
+    document.getElementById("vvipScreen"); 
+
+const yesButton = 
+    document.getElementById("yesButton"); 
+
+const yesScreen = 
+    document.getElementById("yesScreen"); 
+
+
+// =========================
+// 생일 노래
+// =========================
+
+const birthdaySound = 
+    new Audio("sound/birthday.mp3");
+
+birthdaySound.preload = "auto";
 
 
 /* =========================
@@ -500,3 +516,439 @@ waitButton.addEventListener("click", function () {
     noButton.disabled = false;
 
 });
+
+// =========================
+// YES 버튼
+// =========================
+
+yesButton.addEventListener("click", () => {
+
+    // 커튼 음악 정지
+    curtainSound.pause();
+    curtainSound.currentTime = 0;
+
+
+    // VVIP 화면 숨기기
+    vvipScreen.classList.remove("show");
+
+
+    // YES 화면 보여주기
+    yesScreen.classList.add("show");
+
+
+    // =========================
+    // 생일 노래 시작
+    // =========================
+
+    birthdaySound.currentTime = 0;
+
+    birthdaySound.play().catch((error) => {
+        console.log("생일 노래 재생 실패:", error);
+    });
+
+
+    // =========================
+    // 폭죽 시작
+    // =========================
+
+    startFireworks();
+
+
+    // 6초 후 폭죽 종료
+    setTimeout(() => {
+
+        stopFireworks();
+
+    }, 6000);
+
+
+    // =========================
+    // 사진 + 메시지 시작
+    // =========================
+
+    setTimeout(() => {
+
+        startMemories();
+
+    }, 6000);
+
+});
+
+// =========================
+// 사진 + 메시지
+// =========================
+
+const memories = document.querySelectorAll(".memory");
+
+let memoryTimers = [];
+
+
+function startMemories() {
+
+    // 혹시 이전 타이머가 있다면 제거
+    memoryTimers.forEach((timer) => {
+        clearTimeout(timer);
+    });
+
+    memoryTimers = [];
+
+
+    // 처음에는 모든 장면 숨기기
+    memories.forEach((memory) => {
+        memory.classList.remove("show");
+    });
+
+
+    // =========================
+    // 사진 + 메시지 1
+    // 6초부터
+    // =========================
+
+    memoryTimers.push(
+        setTimeout(() => {
+
+            showMemory(0);
+
+        }, 0)
+    );
+
+
+    // =========================
+    // 사진 + 메시지 2
+    // 10.5초부터
+    // =========================
+
+    memoryTimers.push(
+        setTimeout(() => {
+
+            showMemory(1);
+
+        }, 4500)
+    );
+
+
+    // =========================
+    // 사진 + 메시지 3
+    // 15초부터
+    // =========================
+
+    memoryTimers.push(
+        setTimeout(() => {
+
+            showMemory(2);
+
+        }, 9000)
+    );
+
+
+    // =========================
+    // 사진 + 메시지 4
+    // 19.5초부터
+    // =========================
+
+    memoryTimers.push(
+        setTimeout(() => {
+
+            showMemory(3);
+
+        }, 13500)
+    );
+
+}
+
+
+function showMemory(index) {
+
+    // 모든 장면 숨기기
+    memories.forEach((memory) => {
+        memory.classList.remove("show");
+    });
+
+
+    // 해당 장면 보여주기
+    if (memories[index]) {
+
+        memories[index].classList.add("show");
+
+    }
+
+}
+
+
+// ==================================================
+// 폭죽
+// ==================================================
+
+
+// =========================
+// 폭죽 컨테이너
+// =========================
+
+const fireworkContainer =
+    document.getElementById("fireworkContainer");
+
+let fireworkInterval = null;
+
+
+// =========================
+// 폭죽 하나 만들기
+// =========================
+
+function createFirework() {
+
+    // 폭죽 컨테이너가 없으면 종료
+    if (!fireworkContainer) {
+
+        console.log(
+            "폭죽 컨테이너를 찾을 수 없습니다."
+        );
+
+        return;
+    }
+
+
+    // =========================
+    // 폭죽 생성
+    // =========================
+
+    const firework =
+        document.createElement("div");
+
+    firework.classList.add("firework");
+
+
+    // =========================
+    // 폭죽 색상
+    // 노랑 / 주황 / 빨강
+    // =========================
+
+    const fireworkColors = [
+
+        "#FFD95A",
+        "#FF9F43",
+        "#FF6B5E"
+
+    ];
+
+
+    const randomColor =
+        fireworkColors[
+            Math.floor(
+                Math.random() *
+                fireworkColors.length
+            )
+        ];
+
+
+    firework.style.setProperty(
+        "--firework-color",
+        randomColor
+    );
+
+
+    // =========================
+    // 폭죽 위치
+    // =========================
+
+    const x =
+        Math.random() * 80 + 10;
+
+    const y =
+        Math.random() * 65 + 8;
+
+
+    firework.style.left =
+        `${x}%`;
+
+    firework.style.top =
+        `${y}%`;
+
+
+    // 폭죽을 화면에 추가
+    fireworkContainer.appendChild(
+        firework
+    );
+
+
+    // =========================
+    // 빛줄기
+    // =========================
+
+    const rayCount = 14;
+
+
+    for (
+        let i = 0;
+        i < rayCount;
+        i++
+    ) {
+
+        const ray =
+            document.createElement("span");
+
+
+        ray.classList.add(
+            "firework-ray"
+        );
+
+
+        const angle =
+            (360 / rayCount) * i;
+
+
+        ray.style.setProperty(
+            "--angle",
+            `${angle}deg`
+        );
+
+
+        firework.appendChild(
+            ray
+        );
+
+    }
+
+
+    // =========================
+    // 작은 반짝이
+    // =========================
+
+    const sparkCount = 10;
+
+
+    for (
+        let i = 0;
+        i < sparkCount;
+        i++
+    ) {
+
+        const spark =
+            document.createElement("span");
+
+
+        spark.classList.add(
+            "firework-spark"
+        );
+
+
+        const angle =
+            Math.random() *
+            Math.PI *
+            2;
+
+
+        const distance =
+            35 +
+            Math.random() *
+            55;
+
+
+        const sparkX =
+            Math.cos(angle) *
+            distance;
+
+
+        const sparkY =
+            Math.sin(angle) *
+            distance;
+
+
+        spark.style.setProperty(
+            "--spark-x",
+            `${sparkX}px`
+        );
+
+
+        spark.style.setProperty(
+            "--spark-y",
+            `${sparkY}px`
+        );
+
+
+        firework.appendChild(
+            spark
+        );
+
+    }
+
+
+    // =========================
+    // 1초 후 폭죽 삭제
+    // =========================
+
+    setTimeout(() => {
+
+        firework.remove();
+
+    }, 1000);
+
+}
+
+
+// =========================
+// 폭죽 시작
+// =========================
+
+function startFireworks() {
+
+    if (!fireworkContainer) {
+
+        console.log(
+            "fireworkContainer가 없습니다."
+        );
+
+        return;
+    }
+
+
+    // 혹시 기존 폭죽이 있다면 정리
+    if (fireworkInterval) {
+
+        clearInterval(
+            fireworkInterval
+        );
+
+        fireworkInterval = null;
+
+    }
+
+
+    // 바로 폭죽 하나
+    createFirework();
+
+
+    // 0.42초마다 폭죽 생성
+    fireworkInterval =
+        setInterval(() => {
+
+            createFirework();
+
+        }, 420);
+
+}
+
+
+// =========================
+// 폭죽 종료
+// =========================
+
+function stopFireworks() {
+
+    if (fireworkInterval) {
+
+        clearInterval(
+            fireworkInterval
+        );
+
+        fireworkInterval = null;
+
+    }
+
+
+    if (fireworkContainer) {
+
+        fireworkContainer.innerHTML = "";
+
+    }
+
+}
