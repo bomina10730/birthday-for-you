@@ -20,6 +20,8 @@ const yesButton =
 const yesScreen = 
     document.getElementById("yesScreen"); 
 
+const kujiScreen = document.getElementById("kujiScreen");
+
 
 // =========================
 // 생일 노래
@@ -75,18 +77,22 @@ helloButton.addEventListener("click", function () {
        커튼 열기
     ========================= */
 
-    requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
 
         curtain.classList.add("open");
+
+        setTimeout(function () {
+
+            vvipScreen.classList.add("show");
+
+        }, 1200);
 
     });
 
 });
-
 /* ==================================================
    아니요 페이지 요소
 ================================================== */
-
 const noButton =
     document.getElementById("noButton");
 
@@ -554,23 +560,27 @@ yesButton.addEventListener("click", () => {
     startFireworks();
 
 
-    // 6초 후 폭죽 종료
-    setTimeout(() => {
+// =========================
+// 사진 + 메시지 시작
+// =========================
 
-        stopFireworks();
+setTimeout(() => {
 
-    }, 6000);
+    startMemories();
+
+}, 6000);
 
 
-    // =========================
-    // 사진 + 메시지 시작
-    // =========================
+// =========================
+// 24초 후 쿠지판으로 이동
+// =========================
 
-    setTimeout(() => {
+setTimeout(() => {
 
-        startMemories();
+    yesScreen.classList.remove("show");
+    kujiScreen.classList.add("show");
 
-    }, 6000);
+}, 24000);
 
 });
 
@@ -952,3 +962,4 @@ function stopFireworks() {
     }
 
 }
+
