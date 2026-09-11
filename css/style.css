@@ -1751,7 +1751,11 @@ body {
 ========================= */
 
 .kuji-screen {
+    position: fixed;
+    inset: 0;
+
     width: 100%;
+    height: 100dvh;
     min-height: 100dvh;
 
     box-sizing: border-box;
@@ -1770,6 +1774,9 @@ body {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+
+    /* 다른 화면보다 위 */
+    z-index: 50;
 
     transition: opacity 0.8s ease;
 }
@@ -1823,24 +1830,241 @@ body {
     justify-items: center;
 }
 
-
 /* =========================
    KUJI 하나
 ========================= */
 
 .kuji-item {
+    position: relative;
+
     width: 100%;
 
     display: flex;
     justify-content: center;
     align-items: center;
+
+    cursor: pointer;
+
+    isolation: isolate;
 }
 
+
+/* =========================
+   선택된 KUJI 뒤의 빛
+========================= */
+
+.kuji-item::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    /* 불빛 크기 조절 */
+    width: 170%;
+    height: 110%;
+
+    transform: translate(-50%, -50%);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 239, 145, 0.95) 0%,
+            rgba(255, 217, 90, 0.65) 30%,
+            rgba(255, 217, 90, 0.25) 50%,
+            transparent 72%
+        );
+
+    filter: blur(8px);
+
+    opacity: 0;
+
+    z-index: -1;
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   선택된 KUJI
+========================= */
+
+.kuji-item.selected::before {
+    opacity: 1;
+
+    animation: kujiGlow 1.5s ease-in-out infinite;
+}
+
+
+/* =========================
+   빛 반짝반짝
+========================= */
+
+@keyframes kujiGlow {
+
+    0% {
+        transform:
+            translate(-50%, -50%)
+            scale(0.85);
+
+        opacity: 0.45;
+    }
+
+    50% {
+        transform:
+            translate(-50%, -50%)
+            scale(1.08);
+
+        opacity: 1;
+    }
+
+    100% {
+        transform:
+            translate(-50%, -50%)
+            scale(0.85);
+
+        opacity: 0.45;
+    }
+
+}
+
+
+/* =========================
+   KUJI 이미지
+========================= */
+
 .kuji-item img {
+    position: relative;
+
     width: 100%;
     max-width: 115px;
 
     height: auto;
 
     display: block;
+
+    z-index: 1;
+}
+
+/* =========================
+   KUJI 선택하기 버튼
+========================= */
+
+.kuji-select-button {
+    margin-top: 38px;
+
+    padding: 12px 34px;
+
+    border: none;
+    border-radius: 999px;
+
+    background-color: #FFF1E4;
+    color: #191931;
+
+    font-family:
+        Arial,
+        "Malgun Gothic",
+        sans-serif;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(10px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        visibility 0.3s ease;
+}
+
+
+/* 선택된 쿠지가 있을 때 */
+
+.kuji-select-button.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateY(0);
+}
+
+
+/* 버튼 눌렀을 때 */
+
+.kuji-select-button:active {
+    transform: scale(0.95);
+}
+
+/* =========================
+   KUJI 선택 확정
+   전체 어두운 막
+========================= */
+
+.kuji-overlay {
+    position: fixed;
+    inset: 0;
+
+    background-color: rgba(0, 0, 0, 0.65);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    z-index: 90;
+
+    transition:
+        opacity 0.4s ease,
+        visibility 0.4s ease;
+}
+
+
+/* 검은 막 등장 */
+
+.kuji-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================
+   선택된 KUJI 중앙 이동
+========================= */
+
+.kuji-item.moving {
+    position: fixed;
+
+    left: var(--kuji-start-x);
+    top: var(--kuji-start-y);
+
+    width: var(--kuji-start-width);
+
+    z-index: 100;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1);
+
+    transition:
+        left 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+        top 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* 중앙으로 이동 + 3배 확대 */
+
+.kuji-item.moving.center {
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        scale(3);
 }
