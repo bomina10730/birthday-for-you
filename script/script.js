@@ -22,6 +22,195 @@ const yesScreen =
 
 const kujiScreen = document.getElementById("kujiScreen");
 
+// =========================
+// KUJI 선택 기능
+// STEP 1
+// =========================
+
+const kujiItems =
+    document.querySelectorAll(".kuji-item");
+
+const kujiSelectButton =
+    document.getElementById("kujiSelectButton");
+
+let selectedKuji = null;
+
+
+// =========================
+// 쿠지 클릭
+// =========================
+
+kujiItems.forEach(function (kuji, index) {
+
+    kuji.addEventListener("click", function () {
+
+        // 이미 선택된 쿠지를 다시 누른 경우
+        if (selectedKuji === kuji) {
+            return;
+        }
+
+
+        // 이전 선택 해제
+        kujiItems.forEach(function (item) {
+
+            item.classList.remove("selected");
+
+        });
+
+
+        // 현재 쿠지 선택
+        kuji.classList.add("selected");
+
+        selectedKuji = kuji;
+
+
+        // 선택하기 버튼 등장
+        kujiSelectButton.classList.add("show");
+
+
+        console.log(
+            "현재 선택한 KUJI:",
+            index + 1
+        );
+
+    });
+
+});
+
+// ==================================================
+// KUJI 선택하기 버튼
+// STEP 2 → 중앙 이동
+// ==================================================
+
+const kujiOverlay =
+    document.getElementById("kujiOverlay");
+
+
+kujiSelectButton.addEventListener("click", function () {
+
+    // 쿠지를 선택하지 않았다면 종료
+    if (!selectedKuji) {
+        return;
+    }
+
+    // 선택한 쿠지 위치 가져오기
+    const rect =
+        selectedKuji.getBoundingClientRect();
+
+    const startX =
+        rect.left + rect.width / 2;
+
+    const startY =
+        rect.top + rect.height / 2;
+
+    // 현재 위치 저장
+    selectedKuji.style.setProperty(
+        "--kuji-start-x",
+        startX + "px"
+    );
+
+    selectedKuji.style.setProperty(
+        "--kuji-start-y",
+        startY + "px"
+    );
+
+    selectedKuji.style.setProperty(
+        "--kuji-start-width",
+        rect.width + "px"
+    );
+
+    // 선택하기 버튼 숨기기
+    kujiSelectButton.classList.remove("show");
+
+    // 검은 배경 보여주기
+    kujiOverlay.classList.add("show");
+
+    // 중앙 이동 시작
+    selectedKuji.classList.add("moving");
+
+    // 중앙으로 이동
+    requestAnimationFrame(function () {
+
+    requestAnimationFrame(function () {
+
+        selectedKuji.classList.add("center");
+
+
+        // =========================
+        // 중앙에 도착한 뒤 결과판 준비
+        // =========================
+
+        setTimeout(function () {
+
+            createKujiReveal();
+
+        }, 850);
+
+    });
+
+});
+
+});
+
+// ==================================================
+// KUJI STEP 3
+// 결과 이미지 + 왼쪽 → 오른쪽 스와이프
+// ==================================================
+
+// ==================================================
+// KUJI STEP 3
+// 결과 이미지 뒤에 깔기
+// ==================================================
+
+function createKujiReveal() {
+
+    if (!selectedKuji) {
+        return;
+    }
+
+    // 이미 만들어졌다면 종료
+    if (
+        selectedKuji.querySelector(".kuji-result")
+    ) {
+        return;
+    }
+
+    // =========================
+    // 결과 이미지 만들기
+    // =========================
+
+    const result =
+        document.createElement("div");
+
+    result.className = "kuji-result";
+
+
+    const resultImage =
+        document.createElement("img");
+
+
+    // ★ 결과판 이미지
+    resultImage.src = "img/kuji2.png";
+
+    resultImage.alt = "쿠지 결과";
+
+
+    result.appendChild(resultImage);
+
+
+    // =========================
+    // 결과판을 쿠지 맨 뒤에 넣기
+    // =========================
+
+    selectedKuji.insertBefore(
+        result,
+        selectedKuji.firstChild
+    );
+
+
+    console.log("KUJI 결과판 준비 완료!");
+}
+
 
 // =========================
 // 생일 노래
@@ -963,3 +1152,149 @@ function stopFireworks() {
 
 }
 
+// ==================================================
+// KUJI 스와이프
+// 마우스 + 터치
+// 왼쪽 → 오른쪽으로 벗기기
+// ==================================================
+
+function startKujiSwipe(front) {
+
+    let isDragging = false;
+    let currentProgress = 0;
+
+
+    // =========================================
+    // 시작
+    // =========================================
+
+    front.addEventListener("pointerdown", function (event) {
+
+        if (currentProgress >= 100) {
+            return;
+        }
+
+        isDragging = true;
+
+        front.setPointerCapture(event.pointerId);
+
+        front.classList.add("tearing");
+
+        event.preventDefault();
+
+    });
+
+
+    // =========================================
+    // 이동
+    // =========================================
+
+    front.addEventListener("pointermove", function (event) {
+
+        if (!isDragging) {
+            return;
+        }
+
+
+        const rect =
+            front.getBoundingClientRect();
+
+
+        // 쿠지의 왼쪽 끝에서
+        // 현재 마우스 위치까지의 거리
+
+        const moveX =
+            event.clientX - rect.left;
+
+
+        // 전체 쿠지 너비에서
+        // 얼마나 이동했는지 %
+
+        let progress =
+            (moveX / rect.width) * 100;
+
+
+        // 0 ~ 100 사이로 제한
+
+        progress =
+            Math.max(
+                0,
+                Math.min(100, progress)
+            );
+
+
+        currentProgress = progress;
+
+
+        // 앞면 벗기기
+
+        front.style.setProperty(
+            "--tear-progress",
+            progress + ""
+        );
+
+    });
+
+
+    // =========================================
+    // 끝
+    // =========================================
+
+    function finishSwipe(event) {
+
+        if (!isDragging) {
+            return;
+        }
+
+        isDragging = false;
+
+
+        try {
+            front.releasePointerCapture(event.pointerId);
+        } catch (error) {
+            // 무시
+        }
+
+
+        // 65% 이상 밀었으면
+        // 끝까지 자동으로 벗기기
+
+        if (currentProgress >= 65) {
+
+            front.style.setProperty(
+                "--tear-progress",
+                "100"
+            );
+
+            currentProgress = 100;
+
+
+            setTimeout(function () {
+
+                front.classList.remove(
+                    "tearing"
+                );
+
+                console.log(
+                    "KUJI 찢기 완료!"
+                );
+
+            }, 350);
+
+        }
+
+    }
+
+
+    front.addEventListener(
+        "pointerup",
+        finishSwipe
+    );
+
+
+    front.addEventListener(
+        "pointercancel",
+        finishSwipe
+    );
+
+}
