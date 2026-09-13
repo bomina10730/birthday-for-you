@@ -49,24 +49,24 @@ kujiItems.forEach(function (kuji, index) {
             return;
         }
 
+        // ✨ 쿠지 선택 효과음
+        kujiSelectSound.currentTime = 0;
+        kujiSelectSound.play().catch(function (error) {
+            console.log("쿠지 선택 효과음 재생 실패:", error);
+        });
 
         // 이전 선택 해제
         kujiItems.forEach(function (item) {
-
             item.classList.remove("selected");
-
         });
-
 
         // 현재 쿠지 선택
         kuji.classList.add("selected");
 
         selectedKuji = kuji;
 
-
         // 선택하기 버튼 등장
         kujiSelectButton.classList.add("show");
-
 
         console.log(
             "현재 선택한 KUJI:",
@@ -88,10 +88,15 @@ const kujiOverlay =
 
 kujiSelectButton.addEventListener("click", function () {
 
-    // 쿠지를 선택하지 않았다면 종료
     if (!selectedKuji) {
         return;
     }
+
+    // 🔊 선택하기 효과음
+    kujiOpenSound.currentTime = 0;
+    kujiOpenSound.play().catch(function (error) {
+        console.log("쿠지 선택하기 효과음 재생 실패:", error);
+    });
 
     // 선택한 쿠지 위치 가져오기
     const rect =
@@ -119,14 +124,29 @@ kujiSelectButton.addEventListener("click", function () {
         rect.width + "px"
     );
 
+    selectedKuji.style.setProperty(
+    "--kuji-start-height",
+    rect.height + "px"
+    );
+
     // 선택하기 버튼 숨기기
     kujiSelectButton.classList.remove("show");
 
     // 검은 배경 보여주기
     kujiOverlay.classList.add("show");
 
-    // 중앙 이동 시작
-    selectedKuji.classList.add("moving");
+    // ⭐ 원래 쿠지 자리를 그대로 비워두기 위한 자리
+    const placeholder = document.createElement("div");
+    placeholder.className = "kuji-placeholder";
+    placeholder.style.height = rect.height + "px";
+
+    selectedKuji.parentNode.insertBefore(
+        placeholder,
+        selectedKuji
+    );
+
+// 중앙 이동 시작
+selectedKuji.classList.add("moving");
 
     // 중앙으로 이동
     requestAnimationFrame(function () {
@@ -168,15 +188,16 @@ function createKujiReveal() {
         return;
     }
 
-    // 이미 만들어졌다면 종료
+    // 이미 결과판이 만들어졌다면 종료
     if (
         selectedKuji.querySelector(".kuji-result")
     ) {
         return;
     }
 
+
     // =========================
-    // 결과 이미지 만들기
+    // ① 결과 이미지 만들기
     // =========================
 
     const result =
@@ -188,28 +209,336 @@ function createKujiReveal() {
     const resultImage =
         document.createElement("img");
 
-
-    // ★ 결과판 이미지
     resultImage.src = "img/kuji2.png";
-
     resultImage.alt = "쿠지 결과";
 
 
     result.appendChild(resultImage);
 
 
-    // =========================
-    // 결과판을 쿠지 맨 뒤에 넣기
-    // =========================
-
+    // 결과판을 가장 뒤에 넣기
     selectedKuji.insertBefore(
         result,
         selectedKuji.firstChild
     );
 
 
-    console.log("KUJI 결과판 준비 완료!");
+    // =========================
+    // ② 원래 쿠지 이미지 찾기
+    // =========================
+
+    const originalImage =
+        selectedKuji.querySelector(
+            ":scope > img"
+        );
+
+    if (!originalImage) {
+        return;
+    }
+
+
+    // =========================
+    // ③ 원래 쿠지를
+    //    kuji-front 안에 넣기
+    // =========================
+
+    const front =
+        document.createElement("div");
+
+    front.className = "kuji-front";
+
+
+    originalImage.parentNode.insertBefore(
+        front,
+        originalImage
+    );
+
+
+    front.appendChild(
+        originalImage
+    );
+
+
+    // =========================
+    // ④ 처음에는 전부 보이게
+    // =========================
+
+    front.style.setProperty(
+        "--tear-progress",
+        "0"
+    );
+
+
+    // =========================
+    // ⑤ ⭐ 스와이프 기능 연결
+    // =========================
+
+    startKujiSwipe(front);
+
+
+    console.log(
+        "KUJI 결과판 + 스와이프 준비 완료!"
+    );
+} 
+
+// ==================================================
+// KUJI 상 공개 순간 - 화려한 오렌지 팡! 효과
+// ==================================================
+
+function playPrizeBurst() {
+
+    const burst = document.createElement("div");
+    burst.className = "kuji-burst";
+
+    document.body.appendChild(burst);
+
+
+    // =========================
+    // ① 큰 스파크 / 불꽃 파편
+    // =========================
+
+    for (let i = 0; i < 42; i++) {
+
+        const particle =
+            document.createElement("span");
+
+        particle.className =
+            "kuji-burst-particle";
+
+
+        // 랜덤 방향
+        const angle =
+            Math.random() * Math.PI * 2;
+
+        // 조금 더 멀리 터지게
+        const distance =
+            110 + Math.random() * 210;
+
+        const x =
+            Math.cos(angle) * distance;
+
+        const y =
+            Math.sin(angle) * distance;
+
+
+        particle.style.setProperty(
+            "--burst-x",
+            x + "px"
+        );
+
+        particle.style.setProperty(
+            "--burst-y",
+            y + "px"
+        );
+
+
+        // 크기 랜덤
+        const size =
+            3 + Math.random() * 7;
+
+        particle.style.width =
+            size + "px";
+
+        particle.style.height =
+            size + "px";
+
+
+        // 주황 / 금빛 / 흰색 랜덤
+        const colors = [
+            "#FF8A3D",
+            "#FF9F43",
+            "#FFC15A",
+            "#FFD27A",
+            "#FFF1C7",
+            "#FFFFFF"
+        ];
+
+        particle.style.background =
+            colors[
+                Math.floor(
+                    Math.random() * colors.length
+                )
+            ];
+
+
+        burst.appendChild(particle);
+    }
+
+
+    // =========================
+    // ② 길게 뻗는 불꽃 스파크
+    // =========================
+
+    for (let i = 0; i < 18; i++) {
+
+        const spark =
+            document.createElement("span");
+
+        spark.className =
+            "kuji-burst-spark";
+
+
+        const angle =
+            Math.random() * Math.PI * 2;
+
+        const distance =
+            130 + Math.random() * 190;
+
+        const x =
+            Math.cos(angle) * distance;
+
+        const y =
+            Math.sin(angle) * distance;
+
+
+        spark.style.setProperty(
+            "--spark-x",
+            x + "px"
+        );
+
+        spark.style.setProperty(
+            "--spark-y",
+            y + "px"
+        );
+
+
+        spark.style.setProperty(
+            "--spark-rotate",
+            angle + "rad"
+        );
+
+
+        burst.appendChild(spark);
+    }
+
+
+    // =========================
+    // ③ 별 반짝이
+    // =========================
+
+    for (let i = 0; i < 12; i++) {
+
+        const star =
+            document.createElement("span");
+
+        star.className =
+            "kuji-burst-star";
+
+
+        const angle =
+            Math.random() * Math.PI * 2;
+
+        const distance =
+            80 + Math.random() * 190;
+
+        const x =
+            Math.cos(angle) * distance;
+
+        const y =
+            Math.sin(angle) * distance;
+
+
+        star.style.setProperty(
+            "--star-x",
+            x + "px"
+        );
+
+        star.style.setProperty(
+            "--star-y",
+            y + "px"
+        );
+
+
+        burst.appendChild(star);
+    }
+
+    // =========================
+// ④ 흰색 / 노란색 스파클
+// =========================
+
+for (let i = 0; i < 18; i++) {
+
+    const sparkle =
+        document.createElement("span");
+
+    sparkle.className =
+        "kuji-burst-sparkle";
+
+
+    // 랜덤 방향
+    const angle =
+        Math.random() * Math.PI * 2;
+
+    // 조금 멀리 튀어나가게
+    const distance =
+        70 + Math.random() * 190;
+
+    const x =
+        Math.cos(angle) * distance;
+
+    const y =
+        Math.sin(angle) * distance;
+
+
+    sparkle.style.setProperty(
+        "--sparkle-x",
+        x + "px"
+    );
+
+    sparkle.style.setProperty(
+        "--sparkle-y",
+        y + "px"
+    );
+
+
+    // 크기 랜덤
+    const size =
+        0.7 + Math.random() * 0.8;
+
+    sparkle.style.setProperty(
+        "--sparkle-size",
+        size
+    );
+
+
+    // 흰색 / 노란색 랜덤
+    const sparkleColors = [
+        "#FFFFFF",
+        "#FFFDF0",
+        "#FFF4B8",
+        "#FFE27A"
+    ];
+
+    sparkle.style.background =
+        sparkleColors[
+            Math.floor(
+                Math.random() *
+                sparkleColors.length
+            )
+        ];
+
+
+    // 살짝 다른 타이밍으로 튀어나오게
+    sparkle.style.animationDelay =
+        (Math.random() * 0.12) + "s";
+
+
+    burst.appendChild(sparkle);
 }
+
+
+    // =========================
+    // ④ 효과 삭제
+    // =========================
+
+    setTimeout(function () {
+
+        burst.remove();
+
+    }, 1200);
+}
+
+
 
 
 // =========================
@@ -220,6 +549,52 @@ const birthdaySound =
     new Audio("sound/birthday.mp3");
 
 birthdaySound.preload = "auto";
+
+birthdaySound.volume = 1;
+
+// =========================
+// 쿠지 BGM
+// =========================
+
+const kujiBgm = new Audio("sound/kuji-bgm.mp3");
+
+kujiBgm.preload = "auto";
+kujiBgm.loop = true;
+kujiBgm.volume = 0.35;
+
+
+// =========================
+// 쿠지 선택 효과음
+// =========================
+
+const kujiSelectSound =
+    new Audio("sound/kuji-select.mp3");
+
+kujiSelectSound.preload = "auto";
+kujiSelectSound.volume = 0.5;
+
+
+// =========================
+// 쿠지 선택하기 효과음
+// =========================
+
+const kujiOpenSound =
+    new Audio("sound/kuji-open.mp3");
+
+kujiOpenSound.preload = "auto";
+kujiOpenSound.volume = 0.6;
+
+
+// =========================
+// 쿠지 종이 찢기 효과음
+// =========================
+
+const kujiTearSound =
+    new Audio("sound/kuji-tear.mp3");
+
+kujiTearSound.preload = "auto";
+kujiTearSound.volume = 0.7;
+kujiTearSound.playbackRate = 1;
 
 
 /* =========================
@@ -736,6 +1111,7 @@ yesButton.addEventListener("click", () => {
     // =========================
 
     birthdaySound.currentTime = 0;
+    birthdaySound.volume = 1;
 
     birthdaySound.play().catch((error) => {
         console.log("생일 노래 재생 실패:", error);
@@ -764,10 +1140,59 @@ setTimeout(() => {
 // 24초 후 쿠지판으로 이동
 // =========================
 
+// =========================
+// 24초 후 쿠지판으로 이동
+// 마지막 3초는 음악 페이드아웃
+// =========================
+
+setTimeout(() => {
+
+    // 생일 노래 볼륨 서서히 줄이기
+    const fadeOut = setInterval(() => {
+
+        birthdaySound.volume -= 0.05;
+
+        if (birthdaySound.volume <= 0) {
+
+            birthdaySound.volume = 0;
+
+            birthdaySound.pause();
+            birthdaySound.currentTime = 0;
+
+            clearInterval(fadeOut);
+        }
+
+    }, 150);
+
+}, 21000);
+
+
+// =========================
+// 24초 후 쿠지판으로 이동
+// =========================
+
 setTimeout(() => {
 
     yesScreen.classList.remove("show");
     kujiScreen.classList.add("show");
+
+    // 🎵 쿠지 BGM 시작
+   kujiBgm.currentTime = 0;
+kujiBgm.volume = 0.35;
+
+const kujiPlayPromise = kujiBgm.play();
+
+if (kujiPlayPromise !== undefined) {
+
+    kujiPlayPromise
+        .then(() => {
+            console.log("🎵 쿠지 BGM 재생 성공!");
+        })
+        .catch((error) => {
+            console.log("❌ 쿠지 BGM 재생 실패:", error);
+        });
+
+}
 
 }, 24000);
 
@@ -1163,6 +1588,9 @@ function startKujiSwipe(front) {
     let isDragging = false;
     let currentProgress = 0;
 
+    // 찢기 시작 시간
+    let tearStartTime = 0;
+
 
     // =========================================
     // 시작
@@ -1176,9 +1604,32 @@ function startKujiSwipe(front) {
 
         isDragging = true;
 
+        // 찢기 시작 시간 기록
+        tearStartTime = performance.now();
+
         front.setPointerCapture(event.pointerId);
 
         front.classList.add("tearing");
+
+        // ⭐ 찢기 시작하면 쿠지 주변 빛 끄기
+        selectedKuji.classList.add("tearing-start");
+
+
+        // =========================================
+        // 🔊 종이 찢기 소리 시작
+        // =========================================
+
+        kujiTearSound.pause();
+        kujiTearSound.currentTime = 0;
+        kujiTearSound.playbackRate = 1;
+
+        kujiTearSound.play().catch(function (error) {
+            console.log(
+                "쿠지 찢기 효과음 재생 실패:",
+                error
+            );
+        });
+
 
         event.preventDefault();
 
@@ -1233,6 +1684,43 @@ function startKujiSwipe(front) {
             progress + ""
         );
 
+
+        // =========================================
+        // 🔊 찢는 속도에 맞춰 소리 배속 조절
+        // =========================================
+
+        if (progress > 3) {
+
+            const elapsed =
+                (performance.now() - tearStartTime) / 1000;
+
+            // 지금까지 걸린 시간으로
+            // 100%까지 걸릴 것으로 예상되는 시간 계산
+
+            const estimatedTotalTime =
+                elapsed / (progress / 100);
+
+            // 원본 소리 = 3초
+            // 예상 찢는 시간이 3초보다 짧으면 빠르게
+            // 3초보다 길면 느리게
+
+            let playbackRate =
+                3 / estimatedTotalTime;
+
+
+            // 너무 빠르거나 느려지지 않도록 제한
+            playbackRate =
+                Math.max(
+                    0.5,
+                    Math.min(2.5, playbackRate)
+                );
+
+
+            kujiTearSound.playbackRate =
+                playbackRate;
+
+        }
+
     });
 
 
@@ -1250,14 +1738,49 @@ function startKujiSwipe(front) {
 
 
         try {
-            front.releasePointerCapture(event.pointerId);
+
+            front.releasePointerCapture(
+                event.pointerId
+            );
+
         } catch (error) {
             // 무시
         }
 
 
+        // =========================================
+        // 🔊 실제 찢은 시간에 맞춰 최종 배속 계산
+        // =========================================
+
+        const elapsed =
+            (performance.now() - tearStartTime) / 1000;
+
+
+        if (elapsed > 0.1) {
+
+            let finalRate =
+                3 / elapsed;
+
+
+            // 너무 빠르거나 느려지지 않도록 제한
+
+            finalRate =
+                Math.max(
+                    0.5,
+                    Math.min(2.5, finalRate)
+                );
+
+
+            kujiTearSound.playbackRate =
+                finalRate;
+
+        }
+
+
+        // =========================================
         // 65% 이상 밀었으면
         // 끝까지 자동으로 벗기기
+        // =========================================
 
         if (currentProgress >= 65) {
 
@@ -1267,6 +1790,10 @@ function startKujiSwipe(front) {
             );
 
             currentProgress = 100;
+
+
+            // ⭐ 상 공개 순간 팡!
+            playPrizeBurst();
 
 
             setTimeout(function () {
@@ -1280,6 +1807,16 @@ function startKujiSwipe(front) {
                 );
 
             }, 350);
+
+        } else {
+
+            // =========================================
+            // 65% 미만이면 찢기 소리 정지
+            // =========================================
+
+            kujiTearSound.pause();
+            kujiTearSound.currentTime = 0;
+            kujiTearSound.playbackRate = 1;
 
         }
 
