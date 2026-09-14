@@ -35,6 +35,120 @@ const kujiSelectButton =
 
 let selectedKuji = null;
 
+// =========================
+// KUJI 상 랜덤 배치
+// =========================
+
+const kujiPrizes = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "D",
+    "E",
+    "E",
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5"
+];
+
+// 쿠지 12개에 상 랜덤 배치
+const shuffledPrizes = [...kujiPrizes];
+
+for (let i = shuffledPrizes.length - 1; i > 0; i--) {
+
+    const randomIndex =
+        Math.floor(Math.random() * (i + 1));
+
+    const temp =
+        shuffledPrizes[i];
+
+    shuffledPrizes[i] =
+        shuffledPrizes[randomIndex];
+
+    shuffledPrizes[randomIndex] =
+        temp;
+}
+
+// 각각의 쿠지에 상 저장
+kujiItems.forEach(function (kuji, index) {
+
+    kuji.dataset.prize =
+        shuffledPrizes[index];
+
+});
+
+console.log(
+    "이번 쿠지 상 배치:",
+    shuffledPrizes
+);
+
+// =========================
+// KUJI 실제 상 정보
+// =========================
+
+const kujiPrizeInfo = {
+
+    A: {
+        title: "A상",
+        text: "지갑"
+    },
+
+    B: {
+        title: "B상",
+        text: "미정"
+    },
+
+    C: {
+        title: "C상",
+        text: "아크릴 랜덤 가챠"
+    },
+
+    D: [
+        {
+            title: "D상",
+            text: "미나가 데이트 계획 짜기 쿠폰"
+        },
+        {
+            title: "D상",
+            text: "칭찬 10개 해주기 쿠폰"
+        }
+    ],
+
+    E: {
+        title: "E상",
+        text: "보너스 쿠지! 한 번 더 뽑기!"
+    },
+
+    F1: {
+        title: "F상",
+        text: "내 반쪽"
+    },
+
+    F2: {
+        title: "F상",
+        text: "서준이"
+    },
+
+    F3: {
+        title: "F상",
+        text: "생일"
+    },
+
+    F4: {
+        title: "F상",
+        text: "축하해"
+    },
+
+    F5: {
+        title: "F상",
+        text: "❤️"
+    }
+
+};
+
 
 // =========================
 // 쿠지 클릭
@@ -69,9 +183,11 @@ kujiItems.forEach(function (kuji, index) {
         kujiSelectButton.classList.add("show");
 
         console.log(
-            "현재 선택한 KUJI:",
-            index + 1
-        );
+        "현재 선택한 KUJI:",
+        index + 1,
+        "→ 당첨 상:",
+        kuji.dataset.prize
+    );
 
     });
 
@@ -595,6 +711,16 @@ const kujiTearSound =
 kujiTearSound.preload = "auto";
 kujiTearSound.volume = 0.7;
 kujiTearSound.playbackRate = 1;
+
+// =========================
+// 상 공개 빠밤! 효과음
+// =========================
+
+const prizeBurstSound =
+    new Audio("sound/prize-burst.mp3");
+
+prizeBurstSound.preload = "auto";
+prizeBurstSound.volume = 0.8;
 
 
 /* =========================
@@ -1794,6 +1920,15 @@ function startKujiSwipe(front) {
 
             // ⭐ 상 공개 순간 팡!
             playPrizeBurst();
+
+            // 🔊 상 공개 빠밤! 효과음
+            prizeBurstSound.currentTime = 0;
+            prizeBurstSound.play().catch(function (error) {
+                console.log(
+                    "상 공개 효과음 재생 실패:",
+                    error
+                );
+            });
 
 
             setTimeout(function () {
