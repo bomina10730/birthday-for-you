@@ -331,6 +331,45 @@ function createKujiReveal() {
 
     result.appendChild(resultImage);
 
+    // =========================
+    // 선택한 쿠지의 실제 상 가져오기
+    // =========================
+
+    const selectedPrize =
+        selectedKuji.dataset.prize;
+
+
+    // F1~F5는 모두 F상으로 표시
+    let prizeGradeText = selectedPrize;
+
+    if (
+        selectedPrize === "F1" ||
+        selectedPrize === "F2" ||
+        selectedPrize === "F3" ||
+        selectedPrize === "F4" ||
+        selectedPrize === "F5"
+    ) {
+        prizeGradeText = "F";
+    }
+
+
+// =========================
+// 찢긴 쿠지 위에 실제 상 표시
+// =========================
+
+const prizeGrade =
+    document.createElement("div");
+
+prizeGrade.className =
+    "prize-grade";
+
+prizeGrade.innerHTML = `
+    <span>${prizeGradeText}</span>
+    <small>상</small>
+`;
+
+result.appendChild(prizeGrade);
+
 
     // 결과판을 가장 뒤에 넣기
     selectedKuji.insertBefore(
