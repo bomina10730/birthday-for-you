@@ -1528,7 +1528,7 @@ body {
 
     letter-spacing: -0.5px;
 
-    color: #4E5B4A;
+    color: #919191;
 
     transform: translateY(-90px);
 }
@@ -2889,4 +2889,40 @@ body {
 
         opacity: 0;
     }
+}
+
+/* =========================
+   찢긴 쿠지 위 A상
+========================= */
+
+.prize-grade {
+    position: absolute;
+    left: 53%;
+    top: 53%;
+    transform: translate(-50%, -50%);
+
+    z-index: 20;
+
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+
+    pointer-events: none;
+}
+
+.prize-grade span {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+}
+
+.prize-grade small {
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+
+    position: relative;
+    top: -3px;
 }
