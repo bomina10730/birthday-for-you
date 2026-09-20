@@ -129,7 +129,7 @@ const kujiPrizeInfo = {
 
     F2: {
         title: "F상",
-        text: "서준이"
+        text: "서준아"
     },
 
     F3: {
@@ -288,10 +288,7 @@ selectedKuji.classList.add("moving");
 
 });
 
-// ==================================================
-// KUJI STEP 3
-// 결과 이미지 + 왼쪽 → 오른쪽 스와이프
-// ==================================================
+
 
 // ==================================================
 // KUJI STEP 3
@@ -304,6 +301,7 @@ function createKujiReveal() {
         return;
     }
 
+
     // 이미 결과판이 만들어졌다면 종료
     if (
         selectedKuji.querySelector(".kuji-result")
@@ -313,34 +311,43 @@ function createKujiReveal() {
 
 
     // =========================
-    // ① 결과 이미지 만들기
+    // ① 쿠지 뒷면 결과판 만들기
     // =========================
 
     const result =
         document.createElement("div");
 
-    result.className = "kuji-result";
+    result.className =
+        "kuji-result";
 
 
     const resultImage =
         document.createElement("img");
 
-    resultImage.src = "img/kuji2.png";
-    resultImage.alt = "쿠지 결과";
+    resultImage.src =
+        "img/kuji2.png";
+
+    resultImage.alt =
+        "쿠지 결과";
 
 
-    result.appendChild(resultImage);
+    result.appendChild(
+        resultImage
+    );
+
 
     // =========================
-    // 선택한 쿠지의 실제 상 가져오기
+    // ② 실제 당첨 상 가져오기
     // =========================
 
     const selectedPrize =
         selectedKuji.dataset.prize;
 
 
-    // F1~F5는 모두 F상으로 표시
-    let prizeGradeText = selectedPrize;
+    // F1~F5 → F상으로 표시
+    let prizeGradeText =
+        selectedPrize;
+
 
     if (
         selectedPrize === "F1" ||
@@ -349,29 +356,36 @@ function createKujiReveal() {
         selectedPrize === "F4" ||
         selectedPrize === "F5"
     ) {
+
         prizeGradeText = "F";
+
     }
 
 
-// =========================
-// 찢긴 쿠지 위에 실제 상 표시
-// =========================
+    // =========================
+    // ③ 찢긴 쿠지 위에
+    //    A상 / B상 / C상 표시
+    // =========================
 
-const prizeGrade =
-    document.createElement("div");
+    const prizeGrade =
+        document.createElement("div");
 
-prizeGrade.className =
-    "prize-grade";
-
-prizeGrade.innerHTML = `
-    <span>${prizeGradeText}</span>
-    <small>상</small>
-`;
-
-result.appendChild(prizeGrade);
+    prizeGrade.className =
+        "prize-grade";
 
 
-    // 결과판을 가장 뒤에 넣기
+    prizeGrade.innerHTML = `
+        <span>${prizeGradeText}</span>
+        <small>상</small>
+    `;
+
+
+    result.appendChild(
+        prizeGrade
+    );
+
+
+    // 결과판을 쿠지 가장 뒤에 넣기
     selectedKuji.insertBefore(
         result,
         selectedKuji.firstChild
@@ -379,7 +393,7 @@ result.appendChild(prizeGrade);
 
 
     // =========================
-    // ② 원래 쿠지 이미지 찾기
+    // ④ 원래 쿠지 이미지 찾기
     // =========================
 
     const originalImage =
@@ -387,20 +401,22 @@ result.appendChild(prizeGrade);
             ":scope > img"
         );
 
+
     if (!originalImage) {
         return;
     }
 
 
     // =========================
-    // ③ 원래 쿠지를
+    // ⑤ 원래 쿠지를
     //    kuji-front 안에 넣기
     // =========================
 
     const front =
         document.createElement("div");
 
-    front.className = "kuji-front";
+    front.className =
+        "kuji-front";
 
 
     originalImage.parentNode.insertBefore(
@@ -415,7 +431,7 @@ result.appendChild(prizeGrade);
 
 
     // =========================
-    // ④ 처음에는 전부 보이게
+    // ⑥ 처음에는 쿠지 전체 보이기
     // =========================
 
     front.style.setProperty(
@@ -425,7 +441,7 @@ result.appendChild(prizeGrade);
 
 
     // =========================
-    // ⑤ ⭐ 스와이프 기능 연결
+    // ⑦ ⭐⭐⭐ 스와이프 연결
     // =========================
 
     startKujiSwipe(front);
@@ -434,7 +450,8 @@ result.appendChild(prizeGrade);
     console.log(
         "KUJI 결과판 + 스와이프 준비 완료!"
     );
-} 
+}
+
 
 // ==================================================
 // KUJI 상 공개 순간 - 화려한 오렌지 팡! 효과
@@ -694,28 +711,13 @@ for (let i = 0; i < 18; i++) {
 }
 
 
-
-
 // =========================
-// 생일 노래
+// 생일 노래 → 쿠지 BGM 자연스럽게 연결
 // =========================
 
-const birthdaySound = 
-    new Audio("sound/birthday.mp3");
+let musicTransitionStarted = false;
 
-birthdaySound.preload = "auto";
 
-birthdaySound.volume = 1;
-
-// =========================
-// 쿠지 BGM
-// =========================
-
-const kujiBgm = new Audio("sound/kuji-bgm.mp3");
-
-kujiBgm.preload = "auto";
-kujiBgm.loop = true;
-kujiBgm.volume = 0.35;
 
 
 // =========================
@@ -750,6 +752,29 @@ const kujiTearSound =
 kujiTearSound.preload = "auto";
 kujiTearSound.volume = 0.7;
 kujiTearSound.playbackRate = 1;
+
+
+// =========================
+// 생일 노래
+// =========================
+
+const birthdaySound =
+    new Audio("sound/birthday.mp3");
+
+birthdaySound.preload = "auto";
+birthdaySound.volume = 1;
+
+
+// =========================
+// 쿠지 BGM
+// =========================
+
+const kujiBgm =
+    new Audio("sound/kuji-bgm.mp3");
+
+kujiBgm.preload = "auto";
+kujiBgm.loop = true;
+kujiBgm.volume = 0.35;
 
 // =========================
 // 상 공개 빠밤! 효과음
@@ -1278,10 +1303,155 @@ yesButton.addEventListener("click", () => {
     birthdaySound.currentTime = 0;
     birthdaySound.volume = 1;
 
-    birthdaySound.play().catch((error) => {
-        console.log("생일 노래 재생 실패:", error);
-    });
+    // =========================
+// 생일 노래 → 쿠지 BGM
+// 마지막 2.5초 크로스페이드
+// =========================
 
+musicTransitionStarted = false;
+
+const musicCheck = setInterval(function () {
+
+    // 이미 전환했다면 종료
+    if (musicTransitionStarted) {
+
+        clearInterval(musicCheck);
+        return;
+
+    }
+
+
+    // 생일 노래 길이를 아직 못 읽었으면 기다리기
+    if (
+        !Number.isFinite(birthdaySound.duration) ||
+        birthdaySound.duration <= 0
+    ) {
+
+        return;
+
+    }
+
+
+    const remainingTime =
+        birthdaySound.duration -
+        birthdaySound.currentTime;
+
+
+    // =========================
+    // 마지막 2.5초
+    // =========================
+
+    if (
+        remainingTime <= 2.5 &&
+        remainingTime > 0
+    ) {
+
+        musicTransitionStarted = true;
+
+        clearInterval(musicCheck);
+
+
+        // =========================
+        // 쿠지 화면으로 전환
+        // =========================
+
+        yesScreen.classList.remove("show");
+
+        kujiScreen.classList.add("show");
+
+
+        // =========================
+        // 쿠지 BGM 시작
+        // =========================
+
+        kujiBgm.currentTime = 0;
+        kujiBgm.volume = 0;
+
+        kujiBgm.play().catch(function (error) {
+
+            console.log(
+                "쿠지 BGM 재생 실패:",
+                error
+            );
+
+        });
+
+
+        // =========================
+        // 2.5초 크로스페이드
+        // =========================
+
+        const fadeDuration = 2500;
+
+        const fadeStart =
+            performance.now();
+
+
+        function fadeMusic(now) {
+
+            const progress =
+                Math.min(
+                    (now - fadeStart) /
+                    fadeDuration,
+                    1
+                );
+
+
+            // 생일 노래 ↓
+            birthdaySound.volume =
+                1 - progress;
+
+
+            // 쿠지 BGM ↑
+            kujiBgm.volume =
+                0.35 * progress;
+
+
+            if (progress < 1) {
+
+                requestAnimationFrame(
+                    fadeMusic
+                );
+
+            } else {
+
+                // 생일 노래 완전히 종료
+                birthdaySound.pause();
+
+                birthdaySound.currentTime = 0;
+
+                birthdaySound.volume = 1;
+
+
+                // 쿠지 BGM 최종 볼륨
+                kujiBgm.volume = 0.35;
+
+            }
+
+        }
+
+
+        requestAnimationFrame(
+            fadeMusic
+        );
+
+    }
+
+}, 100);
+
+
+// =========================
+// 생일 노래 재생
+// =========================
+
+birthdaySound.play().catch(function (error) {
+
+    console.log(
+        "생일 노래 재생 실패:",
+        error
+    );
+
+});
 
     // =========================
     // 폭죽 시작
@@ -1299,67 +1469,6 @@ setTimeout(() => {
     startMemories();
 
 }, 6000);
-
-
-// =========================
-// 24초 후 쿠지판으로 이동
-// =========================
-
-// =========================
-// 24초 후 쿠지판으로 이동
-// 마지막 3초는 음악 페이드아웃
-// =========================
-
-setTimeout(() => {
-
-    // 생일 노래 볼륨 서서히 줄이기
-    const fadeOut = setInterval(() => {
-
-        birthdaySound.volume -= 0.05;
-
-        if (birthdaySound.volume <= 0) {
-
-            birthdaySound.volume = 0;
-
-            birthdaySound.pause();
-            birthdaySound.currentTime = 0;
-
-            clearInterval(fadeOut);
-        }
-
-    }, 150);
-
-}, 21000);
-
-
-// =========================
-// 24초 후 쿠지판으로 이동
-// =========================
-
-setTimeout(() => {
-
-    yesScreen.classList.remove("show");
-    kujiScreen.classList.add("show");
-
-    // 🎵 쿠지 BGM 시작
-   kujiBgm.currentTime = 0;
-kujiBgm.volume = 0.35;
-
-const kujiPlayPromise = kujiBgm.play();
-
-if (kujiPlayPromise !== undefined) {
-
-    kujiPlayPromise
-        .then(() => {
-            console.log("🎵 쿠지 BGM 재생 성공!");
-        })
-        .catch((error) => {
-            console.log("❌ 쿠지 BGM 재생 실패:", error);
-        });
-
-}
-
-}, 24000);
 
 });
 
@@ -1761,132 +1870,150 @@ function startKujiSwipe(front) {
     // 시작
     // =========================================
 
-    front.addEventListener("pointerdown", function (event) {
+    front.addEventListener(
+        "pointerdown",
+        function (event) {
 
-        if (currentProgress >= 100) {
-            return;
-        }
+            if (currentProgress >= 100) {
+                return;
+            }
 
-        isDragging = true;
+            isDragging = true;
 
-        // 찢기 시작 시간 기록
-        tearStartTime = performance.now();
+            tearStartTime =
+                performance.now();
 
-        front.setPointerCapture(event.pointerId);
-
-        front.classList.add("tearing");
-
-        // ⭐ 찢기 시작하면 쿠지 주변 빛 끄기
-        selectedKuji.classList.add("tearing-start");
-
-
-        // =========================================
-        // 🔊 종이 찢기 소리 시작
-        // =========================================
-
-        kujiTearSound.pause();
-        kujiTearSound.currentTime = 0;
-        kujiTearSound.playbackRate = 1;
-
-        kujiTearSound.play().catch(function (error) {
-            console.log(
-                "쿠지 찢기 효과음 재생 실패:",
-                error
+            front.setPointerCapture(
+                event.pointerId
             );
-        });
+
+            front.classList.add(
+                "tearing"
+            );
+
+            selectedKuji.classList.add(
+                "tearing-start"
+            );
 
 
-        event.preventDefault();
+            // =========================================
+            // 🔊 종이 찢기 효과음
+            // =========================================
 
-    });
+            kujiTearSound.pause();
+            kujiTearSound.currentTime = 0;
+            kujiTearSound.playbackRate = 1;
+
+            kujiTearSound.play().catch(
+                function (error) {
+
+                    console.log(
+                        "쿠지 찢기 효과음 재생 실패:",
+                        error
+                    );
+
+                }
+            );
+
+
+            event.preventDefault();
+
+        }
+    );
 
 
     // =========================================
     // 이동
     // =========================================
 
-    front.addEventListener("pointermove", function (event) {
+    front.addEventListener(
+        "pointermove",
+        function (event) {
 
-        if (!isDragging) {
-            return;
-        }
-
-
-        const rect =
-            front.getBoundingClientRect();
+            if (!isDragging) {
+                return;
+            }
 
 
-        // 쿠지의 왼쪽 끝에서
-        // 현재 마우스 위치까지의 거리
-
-        const moveX =
-            event.clientX - rect.left;
+            const rect =
+                front.getBoundingClientRect();
 
 
-        // 전체 쿠지 너비에서
-        // 얼마나 이동했는지 %
-
-        let progress =
-            (moveX / rect.width) * 100;
+            const moveX =
+                event.clientX - rect.left;
 
 
-        // 0 ~ 100 사이로 제한
-
-        progress =
-            Math.max(
-                0,
-                Math.min(100, progress)
-            );
+            let progress =
+                (moveX / rect.width) * 100;
 
 
-        currentProgress = progress;
-
-
-        // 앞면 벗기기
-
-        front.style.setProperty(
-            "--tear-progress",
-            progress + ""
-        );
-
-
-        // =========================================
-        // 🔊 찢는 속도에 맞춰 소리 배속 조절
-        // =========================================
-
-        if (progress > 3) {
-
-            const elapsed =
-                (performance.now() - tearStartTime) / 1000;
-
-            // 지금까지 걸린 시간으로
-            // 100%까지 걸릴 것으로 예상되는 시간 계산
-
-            const estimatedTotalTime =
-                elapsed / (progress / 100);
-
-            // 원본 소리 = 3초
-            // 예상 찢는 시간이 3초보다 짧으면 빠르게
-            // 3초보다 길면 느리게
-
-            let playbackRate =
-                3 / estimatedTotalTime;
-
-
-            // 너무 빠르거나 느려지지 않도록 제한
-            playbackRate =
+            progress =
                 Math.max(
-                    0.5,
-                    Math.min(2.5, playbackRate)
+                    0,
+                    Math.min(
+                        100,
+                        progress
+                    )
                 );
 
 
-            kujiTearSound.playbackRate =
-                playbackRate;
+            currentProgress =
+                progress;
+
+
+            // =========================================
+            // 쿠지 앞면 벗기기
+            // =========================================
+
+            front.style.setProperty(
+                "--tear-progress",
+                progress + ""
+            );
+
+
+            // =========================================
+            // 🔊 찢는 속도에 맞춰 효과음 배속
+            // =========================================
+
+            if (progress > 3) {
+
+                const elapsed =
+                    (
+                        performance.now()
+                        - tearStartTime
+                    ) / 1000;
+
+
+                const estimatedTotalTime =
+                    elapsed /
+                    (progress / 100);
+
+
+                let playbackRate =
+                    3 /
+                    estimatedTotalTime;
+
+
+                playbackRate =
+                    Math.max(
+                        0.5,
+                        Math.min(
+                            2.5,
+                            playbackRate
+                        )
+                    );
+
+
+                kujiTearSound.playbackRate =
+                    playbackRate;
+
+            }
+
+
+            event.preventDefault();
 
         }
-
-    });
+    );
 
 
     // =========================================
@@ -1909,16 +2036,21 @@ function startKujiSwipe(front) {
             );
 
         } catch (error) {
+
             // 무시
+
         }
 
 
         // =========================================
-        // 🔊 실제 찢은 시간에 맞춰 최종 배속 계산
+        // 🔊 실제 찢은 시간 계산
         // =========================================
 
         const elapsed =
-            (performance.now() - tearStartTime) / 1000;
+            (
+                performance.now()
+                - tearStartTime
+            ) / 1000;
 
 
         if (elapsed > 0.1) {
@@ -1927,12 +2059,13 @@ function startKujiSwipe(front) {
                 3 / elapsed;
 
 
-            // 너무 빠르거나 느려지지 않도록 제한
-
             finalRate =
                 Math.max(
                     0.5,
-                    Math.min(2.5, finalRate)
+                    Math.min(
+                        2.5,
+                        finalRate
+                    )
                 );
 
 
@@ -1943,11 +2076,10 @@ function startKujiSwipe(front) {
 
 
         // =========================================
-        // 65% 이상 밀었으면
-        // 끝까지 자동으로 벗기기
+        // 40% 이상이면 끝까지 찢기
         // =========================================
 
-        if (currentProgress >= 65) {
+        if (currentProgress >= 40) {
 
             front.style.setProperty(
                 "--tear-progress",
@@ -1957,45 +2089,87 @@ function startKujiSwipe(front) {
             currentProgress = 100;
 
 
-            // ⭐ 상 공개 순간 팡!
+            // =========================================
+            // 💥 상 공개 팡!
+            // =========================================
+
             playPrizeBurst();
 
-            // 🔊 상 공개 빠밤! 효과음
+
+            // =========================================
+            // 🔊 상 공개 효과음
+            // =========================================
+
             prizeBurstSound.currentTime = 0;
-            prizeBurstSound.play().catch(function (error) {
-                console.log(
-                    "상 공개 효과음 재생 실패:",
-                    error
-                );
-            });
+
+            prizeBurstSound.play().catch(
+                function (error) {
+
+                    console.log(
+                        "상 공개 효과음 재생 실패:",
+                        error
+                    );
+
+                }
+            );
 
 
-            setTimeout(function () {
+            // =========================================
+            // 0.35초 후 찢기 상태 제거
+            // =========================================
 
-                front.classList.remove(
-                    "tearing"
-                );
+            setTimeout(
+                function () {
 
-                console.log(
-                    "KUJI 찢기 완료!"
-                );
+                    front.classList.remove(
+                        "tearing"
+                    );
 
-            }, 350);
+
+                    // =========================================
+                    // 1.2초 후 선물 결과
+                    // =========================================
+
+                    setTimeout(
+                        function () {
+
+                            showPrizeResult(
+                                selectedKuji.dataset.prize
+                            );
+
+                            console.log(
+                                "KUJI 선물 공개!"
+                            );
+
+                        },
+                        1200
+                    );
+
+                },
+                350
+            );
+
 
         } else {
 
             // =========================================
-            // 65% 미만이면 찢기 소리 정지
+            // 65% 미만이면 취소
             // =========================================
 
             kujiTearSound.pause();
+
             kujiTearSound.currentTime = 0;
+
             kujiTearSound.playbackRate = 1;
 
         }
 
     }
 
+
+    // =========================================
+    // 마우스 / 터치 끝
+    // =========================================
 
     front.addEventListener(
         "pointerup",
