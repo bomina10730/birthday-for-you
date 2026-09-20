@@ -1528,7 +1528,7 @@ body {
 
     letter-spacing: -0.5px;
 
-    color: #919191;
+    color: #bdb6b6;
 
     transform: translateY(-90px);
 }
@@ -2925,4 +2925,60 @@ body {
 
     position: relative;
     top: -3px;
+}
+
+/* =========================
+   쿠지 바로 밑 선물 이름
+   ========================= */
+
+.prize-final-result {
+
+    position: absolute;
+
+    left: 50%;
+    top: 100%;
+
+    width: 100%;
+
+    margin-top: 18px;
+
+    text-align: center;
+
+    opacity: 0;
+
+    transform:
+        translateX(-50%)
+        translateY(-8px);
+
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
+
+    z-index: 20;
+}
+
+
+.prize-final-result.show {
+
+    opacity: 1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+
+}
+
+
+.prize-final-text {
+
+    color: #F7F1E8;
+
+    font-size: 30px;
+
+    font-weight: 500;
+
+    line-height: 1.5;
+
+    text-align: center;
+
 }
