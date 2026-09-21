@@ -2931,54 +2931,111 @@ body {
    쿠지 바로 밑 선물 이름
    ========================= */
 
-.prize-final-result {
-
-    position: absolute;
-
+.kuji-prize-result {
+    position: fixed;
     left: 50%;
-    top: 100%;
+    top: 64%;
 
-    width: 100%;
-
-    margin-top: 18px;
+    transform: translate(-50%, 20px);
 
     text-align: center;
 
     opacity: 0;
+    visibility: hidden;
 
-    transform:
-        translateX(-50%)
-        translateY(-8px);
+    z-index: 1000;
 
     transition:
         opacity 0.5s ease,
         transform 0.5s ease;
-
-    z-index: 20;
 }
 
-
-.prize-final-result.show {
-
+.kuji-prize-result.show {
     opacity: 1;
-
-    transform:
-        translateX(-50%)
-        translateY(0);
-
+    visibility: visible;
+    transform: translate(-50%, 0);
 }
 
 
-.prize-final-text {
+/* SEOJUN'S BIRTHDAY KUJI */
 
-    color: #F7F1E8;
+.prize-result-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
 
-    font-size: 30px;
+    color: #ffffff;
 
-    font-weight: 500;
+    margin-bottom: 10px;
 
-    line-height: 1.5;
+    white-space: nowrap;
+}
 
-    text-align: center;
 
+/* A상 지갑 */
+
+.prize-result-text {
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #ffffff;
+}
+
+#bonusKujiButton {
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 12px 24px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: #ffffff;
+    color: #333333;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+#bonusKujiButton.show {
+    display: inline-block;
+}
+
+/* =========================
+   이미 뽑은 쿠지
+   ========================= */
+
+.kuji-item.opened {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: none;
+}
+
+/* =========================
+   이미 뽑힌 쿠지
+   열린 결과 그대로 유지
+========================= */
+
+.kuji-item.opened {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    pointer-events: none;
+}
+
+.kuji-item.opened .kuji-result {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.kuji-item.opened .kuji-front {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    --tear-progress: 100;
 }
