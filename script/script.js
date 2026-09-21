@@ -480,22 +480,44 @@ function createKujiReveal() {
     }
 
 
-    // =========================
-    // ③ 찢긴 쿠지 위에
-    //    A상 / B상 / C상 표시
-    // =========================
+// =========================
+// ③ 찢긴 쿠지 위 표시
+// =========================
 
-    const prizeGrade =
-        document.createElement("div");
+const prizeGrade =
+    document.createElement("div");
 
-    prizeGrade.className =
-        "prize-grade";
+prizeGrade.className =
+    "prize-grade";
 
+
+// =========================
+// F1~F5는 F상 대신
+// 해당 메시지를 표시
+// =========================
+
+if (
+    selectedPrize === "F1" ||
+    selectedPrize === "F2" ||
+    selectedPrize === "F3" ||
+    selectedPrize === "F4" ||
+    selectedPrize === "F5"
+) {
+
+    prizeGrade.classList.add("prize-grade-f");
+
+    prizeGrade.innerHTML = `
+        <span>${kujiPrizeInfo[selectedPrize].text}</span>
+    `;
+
+} else {
 
     prizeGrade.innerHTML = `
         <span>${prizeGradeText}</span>
         <small>상</small>
     `;
+
+}
 
 
     result.appendChild(
