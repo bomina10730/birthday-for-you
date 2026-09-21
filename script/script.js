@@ -54,31 +54,57 @@ const kujiPrizes = [
     "F5"
 ];
 
-// 쿠지 12개에 상 랜덤 배치
-const shuffledPrizes = [...kujiPrizes];
 
-for (let i = shuffledPrizes.length - 1; i > 0; i--) {
+// =========================
+// 랜덤 섞기 함수
+// =========================
 
-    const randomIndex =
-        Math.floor(Math.random() * (i + 1));
+function shuffle(array) {
 
-    const temp =
-        shuffledPrizes[i];
+    const result = [...array];
 
-    shuffledPrizes[i] =
-        shuffledPrizes[randomIndex];
+    for (let i = result.length - 1; i > 0; i--) {
 
-    shuffledPrizes[randomIndex] =
-        temp;
+        const randomIndex =
+            Math.floor(Math.random() * (i + 1));
+
+        const temp =
+            result[i];
+
+        result[i] =
+            result[randomIndex];
+
+        result[randomIndex] =
+            temp;
+    }
+
+    return result;
 }
 
+
+// =========================
+// 실제 랜덤 배치
+// =========================
+
+const shuffledPrizes =
+    shuffle(kujiPrizes);
+
+
+// =========================
 // 각각의 쿠지에 상 저장
+// =========================
+
 kujiItems.forEach(function (kuji, index) {
 
     kuji.dataset.prize =
         shuffledPrizes[index];
 
 });
+
+
+// =========================
+// 결과 확인
+// =========================
 
 console.log(
     "이번 쿠지 상 배치:",
@@ -103,23 +129,23 @@ const kujiPrizeInfo = {
 
     C: {
         title: "C상",
-        text: "아크릴 랜덤 가챠"
+        text: "체인소맨 랜덤 아크릴"
     },
 
     D: [
         {
             title: "D상",
-            text: "미나가 데이트 계획 짜기 쿠폰"
+            text: "모든걸 미나가 다 에스코드 해주는 데이트권"
         },
         {
             title: "D상",
-            text: "칭찬 10개 해주기 쿠폰"
+            text: "칭찬 편지 써주기 쿠폰권"
         }
     ],
 
     E: {
         title: "E상",
-        text: "보너스 쿠지! 한 번 더 뽑기!"
+        text: "{보너스 쿠지}"
     },
 
     F1: {
@@ -129,7 +155,7 @@ const kujiPrizeInfo = {
 
     F2: {
         title: "F상",
-        text: "서준아"
+        text: "서준이"
     },
 
     F3: {
@@ -144,7 +170,7 @@ const kujiPrizeInfo = {
 
     F5: {
         title: "F상",
-        text: "❤️"
+        text: "♡"
     }
 
 };
@@ -158,36 +184,128 @@ kujiItems.forEach(function (kuji, index) {
 
     kuji.addEventListener("click", function () {
 
-        // 이미 선택된 쿠지를 다시 누른 경우
+        // ==================================================
+        // 이미 뽑힌 쿠지는 다시 선택할 수 없음
+        // ==================================================
+
+        if (kuji.classList.contains("opened")) {
+            return;
+        }
+
+
+        // ==================================================
+        // 이미 현재 선택된 쿠지를 다시 누른 경우
+        // ==================================================
+
         if (selectedKuji === kuji) {
             return;
         }
 
-        // ✨ 쿠지 선택 효과음
+
+        // ==================================================
+        // 현재 아직 뽑히지 않은 쿠지 찾기
+        // opened가 없는 쿠지만 남은 쿠지
+        // ==================================================
+
+        const remainingKuji =
+            Array.from(kujiItems).filter(function (item) {
+
+                return !item.classList.contains("opened");
+
+            });
+
+
+        // ==================================================
+        // 남은 쿠지가 2개일 때
+        // E상이 있다면 E상을 먼저 뽑아야 함
+        // ==================================================
+
+        if (remainingKuji.length === 2) {
+
+            const eKuji =
+                remainingKuji.find(function (item) {
+
+                    return item.dataset.prize === "E";
+
+                });
+
+
+            // E가 남아 있는데
+            // 현재 클릭한 쿠지가 E가 아니라면 선택 막기
+
+            if (
+                eKuji &&
+                kuji.dataset.prize !== "E"
+            ) {
+
+                console.log(
+                    "E상이 남아있어 E상부터 뽑아야 합니다."
+                );
+
+                return;
+            }
+
+        }
+
+
+        // ==================================================
+        // 🔊 쿠지 선택 효과음
+        // ==================================================
+
         kujiSelectSound.currentTime = 0;
+
         kujiSelectSound.play().catch(function (error) {
-            console.log("쿠지 선택 효과음 재생 실패:", error);
+
+            console.log(
+                "쿠지 선택 효과음 재생 실패:",
+                error
+            );
+
         });
 
+
+        // ==================================================
         // 이전 선택 해제
+        // ==================================================
+
         kujiItems.forEach(function (item) {
+
             item.classList.remove("selected");
+
         });
 
+
+        // ==================================================
         // 현재 쿠지 선택
+        // ==================================================
+
         kuji.classList.add("selected");
 
         selectedKuji = kuji;
 
+
+        // ==================================================
         // 선택하기 버튼 등장
+        // ==================================================
+
         kujiSelectButton.classList.add("show");
 
+
+        // ==================================================
+        // 콘솔 확인
+        // ==================================================
+
         console.log(
-        "현재 선택한 KUJI:",
-        index + 1,
-        "→ 당첨 상:",
-        kuji.dataset.prize
-    );
+            "현재 선택한 KUJI:",
+            index + 1,
+            "→ 당첨 상:",
+            kuji.dataset.prize
+        );
+
+        console.log(
+            "남은 쿠지:",
+            remainingKuji.length
+        );
 
     });
 
@@ -2166,20 +2284,367 @@ function startKujiSwipe(front) {
 
     }
 
+// ==================================================
+// KUJI 최종 선물 결과
+// ==================================================
 
-    // =========================================
-    // 마우스 / 터치 끝
-    // =========================================
+function showPrizeResult(prize) {
 
-    front.addEventListener(
-        "pointerup",
-        finishSwipe
+    const resultBox =
+        document.getElementById("kujiPrizeResult");
+
+    const title =
+        resultBox.querySelector(
+            ".prize-result-title"
+        );
+
+    const text =
+        resultBox.querySelector(
+            ".prize-result-text"
+        );
+
+    const bonusKujiButton =
+        document.getElementById("bonusKujiButton");
+
+
+    // =========================
+    // 실제 당첨 정보 가져오기
+    // =========================
+
+    let prizeInfo =
+        kujiPrizeInfo[prize];
+
+
+    // =========================
+    // D상은 둘 중 하나 랜덤
+    // =========================
+
+    if (prize === "D") {
+
+        const randomIndex =
+            Math.floor(
+                Math.random() *
+                prizeInfo.length
+            );
+
+        prizeInfo =
+            prizeInfo[randomIndex];
+
+    }
+
+
+    // =========================
+    // 상단 고정 문구
+    // =========================
+
+    title.textContent =
+        "SEOJUN'S BIRTHDAY KUJI";
+
+
+    // =========================
+    // 현재 상 + 선물 이름
+    // =========================
+
+    let grade =
+        prizeInfo.title;
+
+
+    // F1~F5는 모두 F상
+    if (
+        prize === "F1" ||
+        prize === "F2" ||
+        prize === "F3" ||
+        prize === "F4" ||
+        prize === "F5"
+    ) {
+
+        grade = "F상";
+
+    }
+
+
+    text.textContent =
+        `${grade}  ${prizeInfo.text}`;
+
+
+    // =========================
+    // E상일 때만
+    // "한 번 더 뽑기" 버튼 표시
+    // =========================
+
+    if (prize === "E") {
+
+        bonusKujiButton.classList.add(
+            "show"
+        );
+
+    } else {
+
+        bonusKujiButton.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    // =========================
+    // 결과 등장
+    // =========================
+
+    resultBox.classList.add(
+        "show"
     );
 
 
-    front.addEventListener(
-        "pointercancel",
-        finishSwipe
+    // =========================
+// E상이 아니면
+// 2초 후 자동으로 쿠지판 복귀
+// =========================
+
+if (prize !== "E") {
+
+    setTimeout(function () {
+
+        // 결과창 닫기
+        resultBox.classList.remove("show");
+
+
+        // 반투명 배경 제거
+        kujiOverlay.classList.remove("show");
+
+
+        // ⭐ 열린 쿠지를 원래 자리로 복귀
+        returnOpenedKujiToBoard();
+
+
+        // 쿠지판 보여주기
+        kujiScreen.classList.add("show");
+
+
+        // 선택 초기화
+        selectedKuji = null;
+
+    }, 2000);
+
+}
+
+}
+
+
+// ==================================================
+// 마우스 / 터치 끝
+// ==================================================
+
+front.addEventListener(
+    "pointerup",
+    finishSwipe
+);
+
+
+front.addEventListener(
+    "pointercancel",
+    finishSwipe
+);
+
+}
+
+
+// ==================================================
+// E상 → 한 번 더 뽑기
+// ==================================================
+
+bonusKujiButton.addEventListener(
+    "click",
+    function () {
+
+        // =========================
+        // 결과창 닫기
+        // =========================
+
+        const resultBox =
+            document.getElementById(
+                "kujiPrizeResult"
+            );
+
+        resultBox.classList.remove(
+            "show"
+        );
+
+
+        // =========================
+        // 보너스 버튼 숨기기
+        // =========================
+
+        bonusKujiButton.classList.remove(
+            "show"
+        );
+
+
+        // =========================
+        // 반투명 배경 제거
+        // =========================
+
+        kujiOverlay.classList.remove(
+            "show"
+        );
+
+
+        // =========================
+        // E상 쿠지를
+        // 원래 자리의 열린 상태로 복귀
+        // =========================
+
+        returnOpenedKujiToBoard();
+
+
+        // =========================
+        // 쿠지판 다시 보여주기
+        // =========================
+
+        kujiScreen.classList.add(
+            "show"
+        );
+
+
+        // =========================
+        // 선택 초기화
+        // =========================
+
+        selectedKuji = null;
+
+    }
+);
+
+
+// ==================================================
+// 뽑힌 쿠지를 원래 자리로 복귀
+// 열린 상태 그대로 유지
+// ==================================================
+
+function returnOpenedKujiToBoard() {
+
+    if (!selectedKuji) {
+        return;
+    }
+
+
+    // =========================
+    // 원래 자리 placeholder 찾기
+    // =========================
+
+    const placeholder =
+        document.querySelector(
+            ".kuji-placeholder"
+        );
+
+
+    // =========================
+    // 쿠지를 원래 자리로 이동
+    // =========================
+
+    if (placeholder) {
+
+        // ⭐ 원래 쿠지 높이 기억
+        const originalHeight =
+            placeholder.offsetHeight;
+
+
+        // ⭐ 원래 위치로 이동
+        placeholder.parentNode.insertBefore(
+            selectedKuji,
+            placeholder
+        );
+
+
+        // ⭐⭐⭐ 핵심
+        // 결과판/찢긴 쿠지는 absolute이므로
+        // 부모 쿠지의 높이를 다시 만들어준다
+        selectedKuji.style.height =
+            originalHeight + "px";
+
+
+        // placeholder 삭제
+        placeholder.remove();
+
+    }
+
+
+    // =========================
+    // 중앙 이동 상태 제거
+    // =========================
+
+    selectedKuji.classList.remove(
+        "selected"
     );
 
+    selectedKuji.classList.remove(
+        "moving"
+    );
+
+    selectedKuji.classList.remove(
+        "center"
+    );
+
+    selectedKuji.classList.remove(
+        "tearing"
+    );
+
+    selectedKuji.classList.remove(
+        "tearing-start"
+    );
+
+
+    // =========================
+    // 이미 뽑힌 쿠지
+    // =========================
+
+    selectedKuji.classList.add(
+        "opened"
+    );
+
+
+    // =========================
+    // 중앙 이동용 CSS 변수 제거
+    // =========================
+
+    selectedKuji.style.removeProperty(
+        "--kuji-start-x"
+    );
+
+    selectedKuji.style.removeProperty(
+        "--kuji-start-y"
+    );
+
+    selectedKuji.style.removeProperty(
+        "--kuji-start-width"
+    );
+
+    selectedKuji.style.removeProperty(
+        "--kuji-start-height"
+    );
+
+
+    // =========================
+    // 중앙 이동용 inline style 제거
+    // =========================
+
+    selectedKuji.style.removeProperty(
+        "transform"
+    );
+
+    selectedKuji.style.removeProperty(
+        "left"
+    );
+
+    selectedKuji.style.removeProperty(
+        "top"
+    );
+
+    selectedKuji.style.removeProperty(
+        "width"
+    );
+
+
+    // ⭐⭐⭐ height는 절대 지우지 않음!
+    // selectedKuji.style.removeProperty("height");
 }
