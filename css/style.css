@@ -2908,6 +2908,9 @@ body {
     gap: 3px;
 
     pointer-events: none;
+
+    /* ⭐ 메시지가 한 줄로 나오게 */
+    white-space: nowrap;
 }
 
 .prize-grade span {
@@ -3038,4 +3041,13 @@ body {
     opacity: 1 !important;
 
     --tear-progress: 100;
+}
+
+/* =========================
+   F상 메시지 전용
+========================= */
+
+.prize-grade.prize-grade-f span {
+    font-size: 20px;
+    white-space: nowrap;
 }
