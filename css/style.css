@@ -985,7 +985,7 @@ body {
     /*
        ⭐ 현재 위치
     */
-    top: -570px;
+    top: -550px;
     margin-left: 115px;
 
     padding: 0;
@@ -1528,7 +1528,7 @@ body {
 
     letter-spacing: -0.5px;
 
-    color: #bdb6b6;
+    color: #726767;
 
     transform: translateY(-90px);
 }
@@ -2937,7 +2937,7 @@ body {
 .kuji-prize-result {
     position: fixed;
     left: 50%;
-    top: 64%;
+    top: 70%;
 
     transform: translate(-50%, 20px);
 
