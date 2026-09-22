@@ -985,7 +985,7 @@ body {
     /*
        ⭐ 현재 위치
     */
-    top: -530px;
+    top: -510px;
     margin-left: 115px;
 
     padding: 0;
@@ -3050,4 +3050,378 @@ body {
 .prize-grade.prize-grade-f span {
     font-size: 20px;
     white-space: nowrap;
+}
+
+/* =========================
+   쿠지 결과 화면
+========================= */
+
+.kuji-prize-result {
+    position: fixed;
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%, 20px);
+
+    text-align: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    z-index: 1000;
+
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
+}
+
+.kuji-prize-result.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+
+.prize-result-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #fff;
+    margin-bottom: 10px;
+    white-space: nowrap;
+}
+
+.prize-result-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+}
+
+#bonusKujiButton {
+    display: none;
+
+    margin-top: 20px;
+    padding: 12px 24px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: #fff;
+    color: #333;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+#bonusKujiButton.show {
+    display: inline-block;
+}
+
+/* =========================
+   최종 결과 화면 배경
+========================= */
+
+/* =========================
+   최종 결과 화면 배경
+   중앙 블루 → 양옆 딥블루
+========================= */
+
+.kuji-result-bg {
+    position: fixed;
+    inset: 0;
+
+    z-index: 0;
+    pointer-events: none;
+
+    opacity: 0;
+    visibility: hidden;
+
+    background:
+        radial-gradient(
+            ellipse 45% 90% at 50% 50%,
+            #3D9BFF 0%,
+            #286EDB 28%,
+            #1B4B9E 55%,
+            #202249 100%
+        );
+
+    transition: opacity 0.5s ease;
+}
+
+.kuji-result-bg.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.kuji-item.opened {
+    position: relative;
+    z-index: 10 !important;
+}
+
+/* =========================
+   결과 화면에서 선택된 쿠지 숨기기
+========================= */
+
+.kuji-item.result-hidden {
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* =========================
+   결과 화면에서는
+   현재 뽑은 쿠지만 숨기기
+========================= */
+
+.kuji-item.result-hidden {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* =========================
+   결과 화면 축하 띠
+========================= */
+
+.kuji-result-ribbon {
+    position: fixed;
+
+    top: 18%;
+    left: 50%;
+
+    transform: translateX(-50%) rotate(-2deg);
+
+    width: 115%;
+    max-width: 520px;
+
+    padding: 13px 0;
+
+    z-index: 100;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            90deg,
+            #206DE5 0%,
+            #6B4EDB 50%,
+            #E95C9F 100%
+        );
+
+    box-shadow:
+        0 8px 20px rgba(20, 30, 80, 0.25);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
+}
+
+/* 띠 안쪽 살짝 반짝이는 느낌 */
+
+.kuji-result-ribbon::before,
+.kuji-result-ribbon::after {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+
+    width: 28px;
+
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.kuji-result-ribbon::before {
+    left: 18%;
+    transform: skewX(-18deg);
+}
+
+.kuji-result-ribbon::after {
+    right: 18%;
+    transform: skewX(18deg);
+}
+
+.kuji-result-ribbon span {
+    position: relative;
+
+    z-index: 2;
+
+    color: #ffffff;
+
+    font-size: 22px;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+
+    text-shadow:
+        0 2px 4px rgba(20, 25, 80, 0.25);
+}
+
+.kuji-result-ribbon.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translateX(-50%)
+        rotate(-2deg);
+}
+
+/* ==================================================
+   결과 화면 - 몽글몽글 별빛 반짝임
+================================================== */
+
+.kuji-firefly-layer {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+
+/* =========================
+   별빛 하나
+========================= */
+
+.kuji-firefly {
+    position: absolute;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    box-shadow:
+        0 0 5px rgba(255, 255, 255, 1),
+        0 0 10px currentColor,
+        0 0 18px currentColor;
+
+    animation:
+        starSparkle
+        var(--duration)
+        ease-in-out
+        infinite;
+
+    animation-delay: var(--delay);
+}
+
+
+/* =========================
+   별빛 십자 광선
+========================= */
+
+.kuji-firefly::before,
+.kuji-firefly::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    background: currentColor;
+
+    border-radius: 999px;
+
+    transform: translate(-50%, -50%);
+
+    opacity: 0.75;
+}
+
+
+/* 세로 빛 */
+
+.kuji-firefly::before {
+    width: 1px;
+    height: 18px;
+
+    box-shadow:
+        0 0 5px currentColor;
+}
+
+
+/* 가로 빛 */
+
+.kuji-firefly::after {
+    width: 18px;
+    height: 1px;
+
+    box-shadow:
+        0 0 5px currentColor;
+}
+
+
+/* =========================
+   반짝이는 애니메이션
+========================= */
+
+@keyframes starSparkle {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            scale(0.25);
+    }
+
+    20% {
+        opacity: 0.25;
+
+        transform:
+            scale(0.5);
+    }
+
+    40% {
+        opacity: 1;
+
+        transform:
+            scale(1.25);
+    }
+
+    52% {
+        opacity: 0.55;
+
+        transform:
+            scale(0.8);
+    }
+
+    65% {
+        opacity: 0.95;
+
+        transform:
+            scale(1);
+    }
+
+    82% {
+        opacity: 0.35;
+
+        transform:
+            scale(0.55);
+    }
+
+    100% {
+        opacity: 0;
+
+        transform:
+            scale(0.2);
+    }
+}
+
+
+/* =========================
+   결과 화면일 때만 재생
+========================= */
+
+.kuji-result-bg:not(.show)
+.kuji-firefly {
+    animation-play-state: paused;
 }
