@@ -175,6 +175,13 @@ const kujiPrizeInfo = {
 
 };
 
+    // ==================================================
+    // D상 고정 배정 카운트
+    // D상 2개를 각각 한 번씩 사용
+    // ==================================================
+
+    let dPrizeCount = 0;
+
 
 // =========================
 // 쿠지 클릭
@@ -2306,6 +2313,7 @@ function startKujiSwipe(front) {
 
     }
 
+
 // ==================================================
 // KUJI 최종 선물 결과
 // ==================================================
@@ -2337,20 +2345,23 @@ function showPrizeResult(prize) {
         kujiPrizeInfo[prize];
 
 
-    // =========================
-    // D상은 둘 중 하나 랜덤
-    // =========================
+    // ==================================================
+    // D상은 2개를 각각 한 번씩 고정 배정
+    // ==================================================
 
     if (prize === "D") {
 
-        const randomIndex =
-            Math.floor(
-                Math.random() *
-                prizeInfo.length
-            );
-
         prizeInfo =
-            prizeInfo[randomIndex];
+            kujiPrizeInfo.D[dPrizeCount];
+
+        dPrizeCount++;
+
+        // D상 2개를 모두 사용하면 다시 처음부터
+        if (dPrizeCount >= kujiPrizeInfo.D.length) {
+
+            dPrizeCount = 0;
+
+        }
 
     }
 
@@ -2410,6 +2421,24 @@ function showPrizeResult(prize) {
 
 
     // =========================
+    // 결과 화면에서는
+    // 이미 전에 뽑힌 쿠지만 숨기기
+    // 현재 뽑은 쿠지는 보여주기
+    // =========================
+
+    kujiItems.forEach(function (kuji) {
+
+        if (
+            kuji.classList.contains("opened") &&
+            kuji !== selectedKuji
+        ) {
+            kuji.classList.add("result-hidden");
+        }
+
+    });
+
+
+    // =========================
     // 결과 등장
     // =========================
 
@@ -2417,10 +2446,20 @@ function showPrizeResult(prize) {
         "show"
     );
 
+    const resultBg =
+    document.getElementById("kujiResultBg");
+
+    resultBg.classList.add("show");
+
+    const resultRibbon =
+        document.getElementById("kujiResultRibbon");
+
+    resultRibbon.classList.add("show");
+
 
     // =========================
 // E상이 아니면
-// 2초 후 자동으로 쿠지판 복귀
+// 4초 후 자동으로 쿠지판 복귀
 // =========================
 
 if (prize !== "E") {
@@ -2430,6 +2469,15 @@ if (prize !== "E") {
         // 결과창 닫기
         resultBox.classList.remove("show");
 
+        const resultBg =
+            document.getElementById("kujiResultBg");
+
+        resultBg.classList.remove("show");
+
+        const resultRibbon =
+    document.getElementById("kujiResultRibbon");
+
+resultRibbon.classList.remove("show");
 
         // 반투명 배경 제거
         kujiOverlay.classList.remove("show");
@@ -2446,7 +2494,7 @@ if (prize !== "E") {
         // 선택 초기화
         selectedKuji = null;
 
-    }, 2000);
+    }, 4000);
 
 }
 
@@ -2471,17 +2519,9 @@ front.addEventListener(
 }
 
 
-// ==================================================
-// E상 → 한 번 더 뽑기
-// ==================================================
-
 bonusKujiButton.addEventListener(
     "click",
     function () {
-
-        // =========================
-        // 결과창 닫기
-        // =========================
 
         const resultBox =
             document.getElementById(
@@ -2493,44 +2533,30 @@ bonusKujiButton.addEventListener(
         );
 
 
-        // =========================
-        // 보너스 버튼 숨기기
-        // =========================
+        // ⭐ 결과 배경 닫기
+        const resultBg =
+            document.getElementById("kujiResultBg");
+
+        resultBg.classList.remove("show");
+
 
         bonusKujiButton.classList.remove(
             "show"
         );
 
 
-        // =========================
-        // 반투명 배경 제거
-        // =========================
-
         kujiOverlay.classList.remove(
             "show"
         );
 
 
-        // =========================
-        // E상 쿠지를
-        // 원래 자리의 열린 상태로 복귀
-        // =========================
-
         returnOpenedKujiToBoard();
 
-
-        // =========================
-        // 쿠지판 다시 보여주기
-        // =========================
 
         kujiScreen.classList.add(
             "show"
         );
 
-
-        // =========================
-        // 선택 초기화
-        // =========================
 
         selectedKuji = null;
 
@@ -2667,6 +2693,125 @@ function returnOpenedKujiToBoard() {
     );
 
 
+    // =========================
+    // 결과 화면에서 숨겼던 쿠지 다시 보여주기
+    // =========================
+
+    kujiItems.forEach(function (kuji) {
+
+        kuji.classList.remove(
+            "result-hidden"
+        );
+
+    });
+
     // ⭐⭐⭐ height는 절대 지우지 않음!
     // selectedKuji.style.removeProperty("height");
+}
+
+// ==================================================
+// 쿠지 결과 화면 - 별빛 생성
+// ==================================================
+
+const fireflyLayer =
+    document.querySelector(
+        ".kuji-firefly-layer"
+    );
+
+const fireflyColors = [
+    "#FFFFFF",
+    "#F8F6FF",
+    "#EDE8FF",
+    "#E8F5FF",
+    "#DDEEFF"
+];
+
+const fireflyCount = 24;
+
+
+// ==================================================
+// 별빛 만들기
+// ==================================================
+
+for (
+    let i = 0;
+    i < fireflyCount;
+    i++
+) {
+
+    const firefly =
+        document.createElement("span");
+
+    firefly.classList.add(
+        "kuji-firefly"
+    );
+
+
+    // =========================
+    // 랜덤 위치
+    // =========================
+
+    firefly.style.left =
+        Math.random() * 100 + "%";
+
+    firefly.style.top =
+        Math.random() * 100 + "%";
+
+
+    // =========================
+    // 랜덤 크기
+    // =========================
+
+    const size =
+        3 +
+        Math.random() * 3;
+
+    firefly.style.width =
+        size + "px";
+
+    firefly.style.height =
+        size + "px";
+
+
+    // =========================
+    // 랜덤 색상
+    // =========================
+
+    firefly.style.color =
+        fireflyColors[
+            Math.floor(
+                Math.random() *
+                fireflyColors.length
+            )
+        ];
+
+
+    // =========================
+    // 랜덤 속도
+    // =========================
+
+    firefly.style.setProperty(
+        "--duration",
+        (
+            2.2 +
+            Math.random() * 3
+        ) + "s"
+    );
+
+
+    // =========================
+    // 랜덤 시작 타이밍
+    // =========================
+
+    firefly.style.setProperty(
+        "--delay",
+        (
+            Math.random() * -5
+        ) + "s"
+    );
+
+
+    fireflyLayer.appendChild(
+        firefly
+    );
 }
