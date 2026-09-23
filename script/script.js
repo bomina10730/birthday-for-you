@@ -124,7 +124,7 @@ const kujiPrizeInfo = {
 
     B: {
         title: "B상",
-        text: "미정"
+        text: "편지"
     },
 
     C: {
