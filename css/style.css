@@ -3425,3 +3425,353 @@ body {
 .kuji-firefly {
     animation-play-state: paused;
 }
+
+/* ==================================================
+   iPad Pro 11형 3세대
+   세로 화면 기준
+   834 × 1194
+================================================== */
+
+@media only screen
+    and (min-width: 500px)
+    and (max-width: 1100px)
+    and (orientation: portrait) {
+
+
+    /* ==================================================
+       ① 첫 화면
+    ================================================== */
+
+    .hello-button {
+        width: 150px;
+        height: 52px;
+
+        font-size: 18px;
+    }
+
+
+    /* ==================================================
+       ② VVIP 화면
+    ================================================== */
+
+    .vvip-screen {
+        padding-top: 120px;
+    }
+
+    .character-box {
+        width: 42vw;
+        max-width: 400px;
+    }
+
+    .speech-bubble {
+        width: 58%;
+        max-width: 440px;
+
+        margin-top: 30px;
+
+        padding: 22px 26px;
+    }
+
+    .speech-bubble p {
+        font-size: 18px;
+    }
+
+    .answer-buttons {
+        gap: 38px;
+
+        margin-top: 24px;
+    }
+
+    .answer-button {
+        min-width: 125px;
+        height: 48px;
+
+        font-size: 17px;
+    }
+
+
+    /* ==================================================
+       ③ 아니요 화면
+    ================================================== */
+
+    .scene-huh p {
+        font-size: 82px;
+    }
+
+    .scene-getout p {
+        font-size: 60px;
+    }
+
+
+    .character-card {
+        width: 55vw;
+        max-width: 500px;
+
+        top: 30px;
+    }
+
+    .no-character-box {
+        transform: translateY(-10px);
+    }
+
+    .no-text {
+        left: 0;
+
+        font-size: 22px;
+    }
+
+
+    /* ==================================================
+       ④ 발 / GET OUT 화면
+    ================================================== */
+
+    .feet-position {
+        top: 60px;
+        left: 0;
+    }
+
+    .feet-box {
+        width: 38vw;
+        max-width: 300px;
+    }
+
+    .impact {
+        font-size: 120px;
+    }
+
+    .impact-left {
+        left: 20%;
+        top: 34%;
+    }
+
+    .impact-right {
+        right: 18%;
+        top: 46%;
+    }
+
+    .wait-button {
+        width: 200px;
+        height: 140px;
+
+        top: -580px;
+
+        margin-left: 280px;
+    }
+
+
+    /* ==================================================
+       ⑤ YES / 엔딩 화면
+    ================================================== */
+
+    .yes-photo {
+        width: 42vw;
+        max-width: 420px;
+
+        top: -70px;
+    }
+
+    .memory {
+        padding: 40px 30px;
+    }
+
+    .memory-photo {
+        width: 48vw;
+        max-width: 420px;
+    }
+
+    .memory-message {
+        width: 75%;
+
+        margin-top: 80px;
+    }
+
+    .memory-message p {
+        font-size: 21px;
+        position: relative;
+        top: 46px;
+    }
+
+
+    /* ==================================================
+       ⑥ KUJI 메인 화면
+    ================================================== */
+
+    .kuji-screen {
+        padding:
+            90px
+            40px
+            60px;
+    }
+
+
+    /* =========================
+       KUJI 로고
+    ========================= */
+
+    .kuji-logo {
+        width: 45%;
+        max-width: 340px;
+
+        margin-bottom: 48px;
+    }
+
+
+    /* =========================
+       KUJI 판
+    ========================= */
+
+    .kuji-board {
+        width: 72%;
+        max-width: 600px;
+
+        gap:
+            22px
+            18px;
+    }
+
+
+    /* =========================
+       KUJI 하나
+    ========================= */
+
+    .kuji-item img {
+        width: 100%;
+        max-width: 170px;
+    }
+
+
+    /* =========================
+       선택하기 버튼
+    ========================= */
+
+    .kuji-select-button {
+        margin-top: 52px;
+
+        padding:
+            15px
+            42px;
+
+        font-size: 19px;
+    }
+
+
+    /* ==================================================
+       ⑦ 선택한 쿠지 중앙 이동
+    ================================================== */
+
+    .kuji-item.moving.center {
+        /*
+           모바일보다 살짝 작게
+           아이패드에서는 화면이 넓어서
+           3배 확대하면 너무 커질 수 있음
+        */
+        transform:
+            translate(-50%, -50%)
+            scale(2.6);
+    }
+
+
+    /* ==================================================
+       ⑧ 찢기 안내 문구
+    ================================================== */
+
+    .kuji-swipe-guide {
+        bottom: 10%;
+
+        font-size: 18px;
+    }
+
+
+    /* ==================================================
+       ⑨ 쿠지 결과 화면
+    ================================================== */
+
+    .kuji-prize-result {
+        top: 72%;
+    }
+
+
+    .prize-result-title {
+        font-size: 25px;
+
+        margin-bottom: 14px;
+    }
+
+
+    .prize-result-text {
+        font-size: 16px;
+    }
+
+
+    /* =========================
+       E상 한 번 더 뽑기
+    ========================= */
+
+    #bonusKujiButton {
+        margin-top: 24px;
+
+        padding:
+            14px
+            30px;
+
+        font-size: 17px;
+    }
+
+
+    /* ==================================================
+       ⑩ 결과 화면 축하 띠
+    ================================================== */
+
+    .kuji-result-ribbon {
+        top: 15%;
+
+        width: 105%;
+        max-width: 760px;
+
+        padding: 16px 0;
+    }
+
+
+    .kuji-result-ribbon span {
+        font-size: 28px;
+    }
+
+
+    /* ==================================================
+       ⑪ 결과 화면 열린 쿠지
+    ================================================== */
+
+    .kuji-item.opened {
+        z-index: 10 !important;
+    }
+
+
+    /* ==================================================
+       ⑫ 결과 화면 별빛
+    ================================================== */
+
+    .kuji-firefly-layer {
+        z-index: 2;
+    }
+
+
+    /* ==================================================
+       ⑬ 결과 화면 배경
+    ================================================== */
+
+    .kuji-result-bg {
+        /*
+           아이패드에서는 중앙 블루 영역을
+           조금 더 넓게 보여줌
+        */
+        background:
+            radial-gradient(
+                ellipse 42% 85% at 50% 50%,
+                #3D9BFF 0%,
+                #286EDB 30%,
+                #1B4B9E 57%,
+                #202249 100%
+            );
+    }
+
+}
