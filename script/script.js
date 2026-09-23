@@ -129,7 +129,7 @@ const kujiPrizeInfo = {
 
     C: {
         title: "C상",
-        text: "체인소맨 랜덤 아크릴"
+        text: "체인소맨 랜덤 미니 아크릴"
     },
 
     D: [
