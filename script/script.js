@@ -222,37 +222,38 @@ kujiItems.forEach(function (kuji, index) {
             });
 
 
-        // ==================================================
-        // 남은 쿠지가 2개일 때
-        // E상이 있다면 E상을 먼저 뽑아야 함
-        // ==================================================
+    // ==================================================
+    // 남은 쿠지가 3개일 때
+    // E상이 2개 이상 남아 있다면
+    // E상 하나를 먼저 뽑도록 함
+    // ==================================================
 
-        if (remainingKuji.length === 2) {
+    if (remainingKuji.length === 3) {
 
-            const eKuji =
-                remainingKuji.find(function (item) {
+        const eKujiCount =
+            remainingKuji.filter(function (item) {
 
-                    return item.dataset.prize === "E";
+                return item.dataset.prize === "E";
 
-                });
+            }).length;
 
 
-            // E가 남아 있는데
-            // 현재 클릭한 쿠지가 E가 아니라면 선택 막기
+        // E상이 2개 이상 남아 있다면
+        // E상이 아닌 쿠지는 선택 막기
 
-            if (
-                eKuji &&
-                kuji.dataset.prize !== "E"
-            ) {
+        if (
+            eKujiCount >= 2 &&
+            kuji.dataset.prize !== "E"
+        ) {
 
-                console.log(
-                    "E상이 남아있어 E상부터 뽑아야 합니다."
-                );
+            console.log(
+                "E상이 2개 남아있어 E상부터 뽑아야 합니다."
+            );
 
-                return;
-            }
-
+            return;
         }
+
+    }
 
 
         // ==================================================
