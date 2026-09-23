@@ -959,6 +959,18 @@ helloButton.addEventListener("click", function () {
     curtainSound.currentTime = 0;
     curtainSound.play();
 
+    // =========================
+    // 쿠지 BGM 미리 재생
+    // 모바일 / iPad 자동재생 방지
+    // =========================
+
+    kujiBgm.currentTime = 0;
+    kujiBgm.volume = 0;
+
+    kujiBgm.play().catch(function (error) {
+        console.log("쿠지 BGM 초기 재생 실패:", error);
+    });
+
 
     /* =========================
        입장하기 화면 숨기기
@@ -1505,23 +1517,6 @@ const musicCheck = setInterval(function () {
         yesScreen.classList.remove("show");
 
         kujiScreen.classList.add("show");
-
-
-        // =========================
-        // 쿠지 BGM 시작
-        // =========================
-
-        kujiBgm.currentTime = 0;
-        kujiBgm.volume = 0;
-
-        kujiBgm.play().catch(function (error) {
-
-            console.log(
-                "쿠지 BGM 재생 실패:",
-                error
-            );
-
-        });
 
 
         // =========================
@@ -2323,6 +2318,9 @@ function showPrizeResult(prize) {
     const resultBox =
         document.getElementById("kujiPrizeResult");
 
+    const ribbon =
+        document.querySelector(".kuji-result-ribbon");
+
     const title =
         resultBox.querySelector(
             ".prize-result-title"
@@ -2447,9 +2445,13 @@ function showPrizeResult(prize) {
     );
 
     const resultBg =
-    document.getElementById("kujiResultBg");
+        document.getElementById("kujiResultBg");
 
     resultBg.classList.add("show");
+
+    if (ribbon) {
+        ribbon.classList.add("show");
+    }
 
     const resultRibbon =
         document.getElementById("kujiResultRibbon");
@@ -2469,15 +2471,23 @@ if (prize !== "E") {
         // 결과창 닫기
         resultBox.classList.remove("show");
 
+        document
+            .querySelector(".kuji-result-ribbon")
+            ?.classList.remove("show");
+
+        if (ribbon) {
+            ribbon.classList.remove("show");
+        }
+
         const resultBg =
             document.getElementById("kujiResultBg");
 
         resultBg.classList.remove("show");
 
         const resultRibbon =
-    document.getElementById("kujiResultRibbon");
+            document.getElementById("kujiResultRibbon");
 
-resultRibbon.classList.remove("show");
+        resultRibbon.classList.remove("show");
 
         // 반투명 배경 제거
         kujiOverlay.classList.remove("show");
