@@ -2461,55 +2461,55 @@ function showPrizeResult(prize) {
 
 
     // =========================
-// E상이 아니면
-// 4초 후 자동으로 쿠지판 복귀
-// =========================
+    // E상이 아니면
+    // 4초 후 자동으로 쿠지판 복귀
+    // =========================
 
-if (prize !== "E") {
+    if (prize !== "E") {
 
-    setTimeout(function () {
+        setTimeout(function () {
 
-        // 결과창 닫기
-        resultBox.classList.remove("show");
+            // 결과창 닫기
+            resultBox.classList.remove("show");
 
-        document
-            .querySelector(".kuji-result-ribbon")
-            ?.classList.remove("show");
+            document
+                .querySelector(".kuji-result-ribbon")
+                ?.classList.remove("show");
 
-        if (ribbon) {
-            ribbon.classList.remove("show");
-        }
+            if (ribbon) {
+                ribbon.classList.remove("show");
+            }
 
-        const resultBg =
-            document.getElementById("kujiResultBg");
+            const resultBg =
+                document.getElementById("kujiResultBg");
 
-        resultBg.classList.remove("show");
+            resultBg.classList.remove("show");
 
-        const resultRibbon =
-            document.getElementById("kujiResultRibbon");
+            const resultRibbon =
+                document.getElementById("kujiResultRibbon");
 
-        resultRibbon.classList.remove("show");
+            resultRibbon.classList.remove("show");
 
-        // 반투명 배경 제거
-        kujiOverlay.classList.remove("show");
-
-
-        // ⭐ 열린 쿠지를 원래 자리로 복귀
-        returnOpenedKujiToBoard();
+            // 반투명 배경 제거
+            kujiOverlay.classList.remove("show");
 
 
-        // 쿠지판 보여주기
-        kujiScreen.classList.add("show");
+            // ⭐ 열린 쿠지를 원래 자리로 복귀
+            returnOpenedKujiToBoard();
 
 
-        // 선택 초기화
-        selectedKuji = null;
+            // 쿠지판 보여주기
+            kujiScreen.classList.add("show");
 
-    }, 4000);
 
-}
+            // 선택 초기화
+            selectedKuji = null;
 
-}
+        }, 4000);
+
+    }
+
+    }
 
 
 // ==================================================
@@ -2542,6 +2542,12 @@ bonusKujiButton.addEventListener(
         resultBox.classList.remove(
             "show"
         );
+
+
+        // ⭐ 축하합니다 띠 닫기
+        document
+            .querySelector(".kuji-result-ribbon")
+            ?.classList.remove("show");
 
 
         // ⭐ 결과 배경 닫기
