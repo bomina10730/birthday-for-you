@@ -3540,12 +3540,12 @@ body {
     }
 
     .impact-left {
-        left: 20%;
+        left: 24%;
         top: 34%;
     }
 
     .impact-right {
-        right: 18%;
+        right: 22%;
         top: 46%;
     }
 
@@ -3553,9 +3553,9 @@ body {
         width: 200px;
         height: 140px;
 
-        top: -580px;
+        top: -700px;
 
-        margin-left: 280px;
+        margin-left: 320px;
     }
 
 
