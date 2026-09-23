@@ -256,6 +256,30 @@ kujiItems.forEach(function (kuji, index) {
     }
 
 
+    if (remainingKuji.length === 2) {
+
+    const eKuji =
+        remainingKuji.find(function (item) {
+
+            return item.dataset.prize === "E";
+
+        });
+
+    if (
+        eKuji &&
+        kuji.dataset.prize !== "E"
+    ) {
+
+        console.log(
+            "E상이 남아있어 E상부터 뽑아야 합니다."
+        );
+
+        return;
+    }
+
+}
+
+
         // ==================================================
         // 🔊 쿠지 선택 효과음
         // ==================================================
