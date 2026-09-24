@@ -2692,6 +2692,10 @@ function returnOpenedKujiToBoard() {
     );
 
 
+    // 모든 쿠지를 뽑았는지 확인
+    checkKujiEnding();
+
+
     // =========================
     // 중앙 이동용 CSS 변수 제거
     // =========================
@@ -2748,6 +2752,389 @@ function returnOpenedKujiToBoard() {
 
     // ⭐⭐⭐ height는 절대 지우지 않음!
     // selectedKuji.style.removeProperty("height");
+}
+
+// ==================================================
+// 쿠지 엔딩 시작 조건 확인
+// ==================================================
+
+function checkKujiEnding() {
+
+    const openedCount =
+        Array.from(kujiItems).filter(function (item) {
+
+            return item.classList.contains("opened");
+
+        }).length;
+
+
+    console.log(
+        "현재 뽑힌 쿠지:",
+        openedCount,
+        "/",
+        kujiItems.length
+    );
+
+
+    // 12장 전부 뽑혔을 때
+    if (openedCount === kujiItems.length) {
+
+        console.log(
+            "ENDING START"
+        );
+
+
+        // ==================================================
+        // F상 엔딩 메시지 반짝이 시작
+        // ==================================================
+
+        startFPrizeEnding();
+
+    }
+
+}
+
+// ==================================================
+// F상 엔딩 메시지 순서
+// 내 반쪽 → 서준이 → 생일 → 축하해 → ♡
+// ==================================================
+
+function startFPrizeEnding() {
+
+    const endingOrder = [
+        "내 반쪽",
+        "서준이",
+        "생일",
+        "축하해",
+        "♡"
+    ];
+
+
+    let currentIndex = 0;
+
+
+    function highlightNextFPrize() {
+
+        if (currentIndex >= endingOrder.length) {
+
+            console.log(
+                "F상 엔딩 메시지 반짝이 완료!"
+            );
+
+            showFinalBirthdayMessage();
+
+            return;
+
+        }
+
+
+        const targetText =
+            endingOrder[currentIndex];
+
+
+        // 현재 쿠지판에서
+        // 해당 메시지를 가진 F상 찾기
+
+        const targetKuji =
+            Array.from(kujiItems).find(
+                function (item) {
+
+                    const text =
+                        item.textContent.trim();
+
+                    return (
+                        item.classList.contains("opened") &&
+                        text.includes(targetText)
+                    );
+
+                }
+            );
+
+
+        if (targetKuji) {
+
+            console.log(
+                "엔딩 반짝:",
+                targetText
+            );
+
+
+            targetKuji.classList.add(
+                "ending-sparkle"
+            );
+
+
+            setTimeout(
+                function () {
+
+                    targetKuji.classList.remove(
+                        "ending-sparkle"
+                    );
+
+                },
+                1200
+            );
+
+        }
+
+
+        currentIndex++;
+
+
+        setTimeout(
+            highlightNextFPrize,
+            1200
+        );
+
+    }
+
+
+    highlightNextFPrize();
+
+}
+
+// ==================================================
+// 최종 생일 축하 메시지
+// ==================================================
+
+function showFinalBirthdayMessage() {
+
+    console.log(
+        "최종 생일 축하 메시지 등장"
+    );
+
+
+    const finalOverlay =
+        document.getElementById(
+            "kujiFinalOverlay"
+        );
+
+
+    const finalMessage =
+        document.getElementById(
+            "kujiFinalMessage"
+        );
+
+
+    // ------------------------------------------
+    // ① 불투명 배경 등장
+    // ------------------------------------------
+
+    if (finalOverlay) {
+
+        finalOverlay.classList.add(
+            "show"
+        );
+
+    }
+
+
+    // ------------------------------------------
+    // ② 사진 + 최종 문구 등장
+    // ------------------------------------------
+
+    if (finalMessage) {
+
+        setTimeout(
+            function () {
+
+                finalMessage.classList.add(
+                    "show"
+                );
+
+                startEndingSparkles();
+
+            },
+            300
+        );
+
+    }
+
+
+    // ------------------------------------------
+    // ③ 최종 메시지를 충분히 보여준 뒤
+    //    커튼 닫기
+    // ------------------------------------------
+
+    setTimeout(
+    function () {
+
+        const sparkleContainer =
+            document.getElementById(
+                "kujiEndingSparkles"
+            );
+
+        if (sparkleContainer) {
+
+            sparkleContainer.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        // 반짝이가 사라질 시간을 살짝 준 뒤
+        setTimeout(
+            function () {
+
+                closeBirthdayCurtain();
+
+            },
+            700
+        );
+
+    },
+    4500
+);
+
+}
+
+// ==================================================
+// 엔딩 반짝이 생성
+// ==================================================
+
+function startEndingSparkles() {
+
+    const sparkleContainer =
+        document.getElementById(
+            "kujiEndingSparkles"
+        );
+
+
+    if (!sparkleContainer) {
+        return;
+    }
+
+
+    // 이미 만들어져 있다면 중복 생성 방지
+    if (
+        sparkleContainer.children.length > 0
+    ) {
+
+        sparkleContainer.classList.add(
+            "show"
+        );
+
+        return;
+
+    }
+
+
+    const sparkleCount = 28;
+
+
+    for (
+        let i = 0;
+        i < sparkleCount;
+        i++
+    ) {
+
+        const sparkle =
+            document.createElement(
+                "span"
+            );
+
+
+        sparkle.classList.add(
+            "kuji-ending-sparkle"
+        );
+
+
+        // 크기 랜덤
+        const sizeRandom =
+            Math.random();
+
+
+        if (sizeRandom < 0.25) {
+
+            sparkle.classList.add(
+                "small"
+            );
+
+        }
+        else if (
+            sizeRandom > 0.82
+        ) {
+
+            sparkle.classList.add(
+                "large"
+            );
+
+        }
+
+
+        // 화면 위치
+        sparkle.style.left =
+            (
+                8 +
+                Math.random() * 84
+            ) + "%";
+
+
+        sparkle.style.top =
+            (
+                8 +
+                Math.random() * 84
+            ) + "%";
+
+
+        // 각자 다른 속도
+        sparkle.style.setProperty(
+            "--sparkle-duration",
+            (
+                2.2 +
+                Math.random() * 2
+            ) + "s"
+        );
+
+
+        // 각자 다른 시작 시간
+        sparkle.style.setProperty(
+            "--sparkle-delay",
+            (
+                Math.random() * 2
+            ) + "s"
+        );
+
+
+        sparkleContainer.appendChild(
+            sparkle
+        );
+
+    }
+
+
+    sparkleContainer.classList.add(
+        "show"
+    );
+
+}
+
+// ==================================================
+// 엔딩 커튼 닫기
+// ==================================================
+
+function closeBirthdayCurtain() {
+
+    console.log("엔딩 커튼 닫기 시작");
+
+
+    // 커튼 엔딩용 스타일 적용
+    curtain.classList.add("ending");
+
+
+    // 커튼을 화면 위로 가져오기
+    curtain.classList.add("show");
+
+
+    // 현재 열려 있는 상태에서
+    // open을 제거하면 처음 위치로 돌아가며 닫힘
+    requestAnimationFrame(function () {
+
+        curtain.classList.remove("open");
+
+    });
+
 }
 
 // ==================================================
