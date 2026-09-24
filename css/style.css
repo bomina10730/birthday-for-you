@@ -3779,3 +3779,398 @@ body {
     }
 
 }
+
+/* =========================
+   F상 엔딩 은은한 반짝임
+========================= */
+
+.kuji-item.ending-sparkle {
+    animation: endingKujiSparkle 1s ease-in-out;
+}
+
+
+@keyframes endingKujiSparkle {
+
+    0% {
+        filter:
+            brightness(1)
+            drop-shadow(
+                0 0 0 rgba(255, 255, 255, 0)
+            );
+
+        transform: scale(1);
+    }
+
+
+    25% {
+        filter:
+            brightness(1.18)
+            drop-shadow(
+                0 0 6px rgba(255, 255, 255, 0.45)
+            );
+
+        transform: scale(1.015);
+    }
+
+
+    50% {
+        filter:
+            brightness(1.32)
+            drop-shadow(
+                0 0 11px rgba(215, 225, 255, 0.7)
+            );
+
+        transform: scale(1.025);
+    }
+
+
+    75% {
+        filter:
+            brightness(1.18)
+            drop-shadow(
+                0 0 7px rgba(225, 215, 255, 0.5)
+            );
+
+        transform: scale(1.015);
+    }
+
+
+    100% {
+        filter:
+            brightness(1)
+            drop-shadow(
+                0 0 0 rgba(255, 255, 255, 0)
+            );
+
+        transform: scale(1);
+    }
+
+}
+
+/* =========================
+   최종 생일 축하 화면
+========================= */
+
+.kuji-final-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 2000;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.9);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity 0.8s ease,
+        visibility 0.8s ease;
+
+    pointer-events: none;
+}
+
+
+.kuji-final-overlay.show {
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+/* =========================
+   최종 메시지
+========================= */
+
+.kuji-final-message {
+
+    text-align: center;
+
+    color: #ffffff;
+
+    opacity: 0;
+
+    transform:
+        translateY(15px)
+        scale(0.96);
+
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
+
+    text-shadow:
+        0 2px 12px
+        rgba(255, 255, 255, 0.18);
+}
+
+
+.kuji-final-message.show {
+
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+.kuji-final-message p {
+
+    margin: 0;
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    line-height: 1.6;
+
+    letter-spacing:
+        0.08em;
+}
+
+
+.kuji-final-message p + p {
+
+    margin-top: 4px;
+}
+
+
+.kuji-final-message span {
+
+    display: inline-block;
+
+    color: #f5eaff;
+
+    text-shadow:
+        0 0 10px
+        rgba(220, 205, 255, 0.8);
+
+}
+
+/* =========================
+   엔딩 사진
+========================= */
+
+.kuji-ending-photo {
+    display: block;
+
+    width: 400px;
+    height: auto;
+
+    margin: 0 auto 24px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 30px
+        rgba(0, 0, 0, 0.28);
+
+    opacity: 0;
+
+    transform:
+        translateY(10px)
+        scale(0.96);
+
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
+}
+
+
+/* 최종 메시지가 등장하면 사진도 같이 등장 */
+
+.kuji-final-message.show .kuji-ending-photo {
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+
+/* 최종 메시지가 등장하면 사진도 같이 등장 */
+
+.kuji-final-message.show
+.kuji-ending-photo {
+
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+/* ==================================================
+   엔딩 커튼
+================================================== */
+
+/* 엔딩 때는 쿠지 화면 위를 완전히 덮도록 */
+.curtain-wrap.ending {
+    z-index: 3000;
+}
+
+/* 엔딩 커튼 색상 - 쿠지 딥블루 계열 */
+.curtain-wrap.ending .curtain {
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #202249 0px,
+            #27305D 8px,
+            #1B2147 16px,
+            #27305D 24px,
+            #202249 32px
+        );
+}
+
+/* 처음 커튼과 같은 양쪽 그림자 */
+.curtain-wrap.ending .curtain-left {
+    box-shadow:
+        inset -8px 0 12px rgba(0, 0, 0, 0.18);
+}
+
+.curtain-wrap.ending .curtain-right {
+    box-shadow:
+        inset 8px 0 12px rgba(0, 0, 0, 0.18);
+}
+
+/* ==================================================
+   엔딩 몽글몽글 반짝이
+================================================== */
+
+.kuji-ending-sparkles {
+
+    position: absolute;
+
+    inset: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transition:
+        opacity 1s ease;
+
+    z-index: 1;
+}
+
+
+/* 반짝이 시작 */
+
+.kuji-ending-sparkles.show {
+    opacity: 1;
+}
+
+
+/* 개별 반짝이 */
+
+.kuji-ending-sparkle {
+
+    position: absolute;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 5px rgba(255, 255, 255, 0.9),
+        0 0 12px rgba(210, 225, 255, 0.7);
+
+    opacity: 0;
+
+    animation:
+        kujiFirefly
+        var(--sparkle-duration)
+        ease-in-out
+        infinite;
+
+    animation-delay:
+        var(--sparkle-delay);
+}
+
+
+/* 아주 작은 빛 */
+
+.kuji-ending-sparkle.small {
+
+    width: 4px;
+    height: 4px;
+
+    box-shadow:
+        0 0 4px rgba(255, 255, 255, 0.85),
+        0 0 9px rgba(205, 220, 255, 0.6);
+}
+
+
+/* 조금 더 큰 빛 */
+
+.kuji-ending-sparkle.large {
+
+    width: 10px;
+    height: 10px;
+
+    box-shadow:
+        0 0 7px rgba(255, 255, 255, 0.95),
+        0 0 18px rgba(220, 205, 255, 0.75);
+}
+
+
+/* 몽글몽글 나타났다 사라지는 효과 */
+
+@keyframes kujiFirefly {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            scale(0.5)
+            translateY(8px);
+
+    }
+
+    25% {
+
+        opacity: 0.35;
+
+    }
+
+    50% {
+
+        opacity: 0.85;
+
+        transform:
+            scale(1)
+            translateY(0);
+
+    }
+
+    75% {
+
+        opacity: 0.45;
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            scale(0.55)
+            translateY(-10px);
+
+    }
+
+}
